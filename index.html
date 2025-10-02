@@ -38,7 +38,61 @@
         </div>
         <div v-else>
           <h2>Checkout</h2>
-          <p>Thank you for your order!</p>
+          <p>
+            <strong>First Name:</strong>
+            <input 
+              v-model="order.firstName" 
+              placeholder="Your First Name"/>
+          </p>
+          <p>
+            <strong>Last Name:</strong>
+            <input 
+              v-model="order.lastName" 
+              placeholder="Your Last Name"/>
+          </p>
+          <p>
+            <strong>Address:</strong>
+            <input 
+              v-model="order.address" 
+              placeholder="Your Address"/>
+          </p>
+          <p>
+            <strong>City:</strong>
+            <input 
+              v-model="order.city" 
+              placeholder="Your City"/>
+          </p>
+          <p>
+            <strong>District:</strong>
+            <select v-model="order.state">
+              <option disabled value="">District</option>
+              <option>Port Louis</option>
+              <option>Flacq</option>
+              <option>Moka</option>
+              <option>Black River</option>
+              <option>North</option>
+            </select>
+            <p>
+              <input type="checkbox" id="gift" 
+                     v-model="order.gift"
+                     :true-value="order.sendGift"
+                     :false-value="order.dontSendGift">
+              <label for="gift">Ship As gift?</label>
+            </p>
+
+            <p><input type="radio" id="home" value="Home" v-model="order.method">
+            <label for="home">Home</label></p>
+            <p><input type="radio" id="business" value="Business" v-model="order.method">
+            <label for="business">Business</label></p>
+            <h2>Order Information</h2>
+            <p>First Name: {{ order.firstName }} </p>
+            <p>Last Name: {{ order.lastName }} </p>
+            <p>Address: {{ order.address }} </p>
+            <p>City: {{ order.city }} </p>
+            <p>District: {{ order.state }} </p>
+            <p>Shipping Method: {{ order.method }} </p>
+            <p>Gift: {{ order.gift }} </p>
+          <button v-on:click="submitForm">Submit Order</button>
           <button v-on:click="showCheckout">Back to Product</button>
        </main>
     </div>
@@ -46,7 +100,18 @@
        var webstore = new Vue({
      el: '#webstore',
      data: {
-        showProduct: true,
+       showProduct: true,
+       order: {
+         firstName: '',
+         lastName: '',
+         address: '',
+         city: '',
+         state: '',
+         method: 'Home',
+         gift: 'Do not send as Gift',
+         sendGift: 'Send as Gift',
+         dontSendGift: 'Do not send as Gift'
+       },
        message: 'Welcome to my Pet Store !!!!',
        product: {
          id: 1001,
@@ -77,7 +142,11 @@
          } else {
            this.showProduct = true;
        }
-    }
+    },
+        submitForm() {
+          alert(`Thank you for your order, ${this.order.firstName}!`);
+          
+        }
 }
        });
        
