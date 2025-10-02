@@ -19,7 +19,7 @@
         <div v-if="showProduct">
         <header>
             <h2 v-text="product.title" ></h2>
-            <button v-on:click="showCheckout">
+            <button class="checkout-btn" v-on:click="showCheckout">
                 
                <span class="fa-solid fa-cart-shopping"></span> Checkout
               {{ cartItemCount}}

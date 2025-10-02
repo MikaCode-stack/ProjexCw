@@ -27,3 +27,6 @@ button:disabled {
   border-radius: 50px; /* pill shape */
   font-weight: bold;
 }
+.checkout-btn:hover {
+  background-color: #0056b3; /* darker blue on hover */
+}
