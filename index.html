@@ -1,157 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./styles.css">
-    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-    
-    <title>Pet Store</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+
+  <title>Pet Store</title>
 </head>
+
 <body>
-    <div id="webstore">
-       <h1> {{message}} </h1>
-       <!-- Vue mounts to the #webstore element.
+  <div id="webstore">
+    <h1> {{message}} </h1>
+    <!-- Vue mounts to the #webstore element.
 
         //{{ message }} is interpolation, showing data from Vue.-->
-       <main>
-        <div v-if="showProduct">
+    <main>
+      <div v-if="showProduct">
         <header>
-            <h2 v-text="product.title" ></h2>
-            <button class="checkout-btn" v-on:click="showCheckout">
-                
-               <span class="fa-solid fa-cart-shopping"></span> Checkout
-              {{ cartItemCount}}
+          <h2 v-text="product.title"></h2>
+          <button class="checkout-btn" v-on:click="showCheckout">
 
-          </button></header>
+            <span class="fa-solid fa-cart-shopping"></span> Checkout
+            {{ cartItemCount}}
+
+          </button>
+        </header>
         <figure>
           <img v-bind:src="product.image" alt="Cat Image">
-            <figcaption>Image of {{product.title}}</figcaption>
+          <figcaption>Image of {{product.title}}</figcaption>
         </figure>
-        
-          <p v-text="product.id"> </p>
-          <p v-text="product.description"></p>
-          <p>Price: {{product.price}} </p>
-          <button v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
-            <button v-else disabled>Sold Out</button>
-        </div>
-        <div v-else>
-          <h2>Checkout</h2>
-          <p>
-            <strong>First Name:</strong>
-            <input 
-              v-model="order.firstName" 
-              placeholder="Your First Name"/>
-          </p>
-          <p>
-            <strong>Last Name:</strong>
-            <input 
-              v-model="order.lastName" 
-              placeholder="Your Last Name"/>
-          </p>
-          <p>
-            <strong>Address:</strong>
-            <input 
-              v-model="order.address" 
-              placeholder="Your Address"/>
-          </p>
-          <p>
-            <strong>City:</strong>
-            <input 
-              v-model="order.city" 
-              placeholder="Your City"/>
-          </p>
-          <p>
-            <strong>District:</strong>
-            <select v-model="order.state">
-              <option disabled value="">District</option>
-              <option>Port Louis</option>
-              <option>Flacq</option>
-              <option>Moka</option>
-              <option>Black River</option>
-              <option>North</option>
-            </select>
-            <p>
-              <input type="checkbox" id="gift" 
-                     v-model="order.gift"
-                     :true-value="order.sendGift"
-                     :false-value="order.dontSendGift">
-              <label for="gift">Ship As gift?</label>
-            </p>
 
-            <p><input type="radio" id="home" value="Home" v-model="order.method">
-            <label for="home">Home</label></p>
-            <p><input type="radio" id="business" value="Business" v-model="order.method">
-            <label for="business">Business</label></p>
-            <h2>Order Information</h2>
-            <p>First Name: {{ order.firstName }} </p>
-            <p>Last Name: {{ order.lastName }} </p>
-            <p>Address: {{ order.address }} </p>
-            <p>City: {{ order.city }} </p>
-            <p>District: {{ order.state }} </p>
-            <p>Shipping Method: {{ order.method }} </p>
-            <p>Gift: {{ order.gift }} </p>
-          <button v-on:click="submitForm">Submit Order</button>
-          <button v-on:click="showCheckout">Back to Product</button>
-       </main>
-    </div>
-<script>
-       var webstore = new Vue({
-     el: '#webstore',
-     data: {
-       showProduct: true,
-       order: {
-         firstName: '',
-         lastName: '',
-         address: '',
-         city: '',
-         state: '',
-         method: 'Home',
-         gift: 'Do not send as Gift',
-         sendGift: 'Send as Gift',
-         dontSendGift: 'Do not send as Gift'
-       },
-       message: 'Welcome to my Pet Store !!!!',
-       product: {
-         id: 1001,
-         title: 'Cat Food 25 lb bag',
-         description: 'Irresistible cat food for your cat',
-         price: 2500,
-         image: 'product-fullsize.png',
-         availableInventory: 5
-       },
-       cart: []
-     },
-     computed: {
-         cartItemCount() {
-           return this.cart.length;
-         },
-         canAddToCart() {
-           return this.product.availableInventory > this.cartItemCount;
-         }
-     },
-     methods: {
-       addToCart() {
-         this.cart.push(this.product.id);
-         console.log(this.cart); // Log the cart contents to the console
-       },
-       showCheckout() {
-         if (this.showProduct) {
-           this.showProduct = false;
-         } else {
-           this.showProduct = true;
-       }
-    },
+        <p v-text="product.id"> </p>
+        <p v-text="product.description"></p>
+        <p>Price: {{product.price}} </p>
+        <button v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
+        <button v-else disabled>Sold Out</button>
+      </div>
+      <div v-else>
+        <h2>Checkout</h2>
+        <p>
+          <strong>First Name:</strong>
+          <input v-model.trim="order.firstName" placeholder="Your First Name" />
+        </p>
+        <p>
+          <strong>Last Name:</strong>
+          <input v-model.trim="order.lastName" placeholder="Your Last Name" />
+        </p>
+        <p>
+          <strong>Address:</strong>
+          <input v-model.trim="order.address" placeholder="Your Address" />
+        </p>
+        <p>
+          <strong>City:</strong>
+          <input v-model="order.city" placeholder="Your City" />
+        </p>
+        <p>
+          <strong>District:</strong>
+          <select v-model="order.state">
+            <option disabled value="">Select District</option>
+            <option v-for="state in states" :key="state">{{ state }}</option>
+          </select>
+        </p>
+
+        <input type="checkbox" id="gift" v-model="order.gift" :true-value="order.sendGift"
+          :false-value="order.dontSendGift">
+        <label for="gift">Ship As gift?</label>
+        </p>
+
+        <p><input type="radio" id="home" value="Home" v-model="order.method">
+          <label for="home">Home</label>
+        </p>
+        <p><input type="radio" id="business" value="Business" v-model="order.method">
+          <label for="business">Business</label>
+        </p>
+        <h2>Order Information</h2>
+        <p>First Name: {{ order.firstName }} </p>
+        <p>Last Name: {{ order.lastName }} </p>
+        <p>Address: {{ order.address }} </p>
+        <p>City: {{ order.city }} </p>
+        <p>District: {{ order.state }} </p>
+        <p>Shipping Method: {{ order.method }} </p>
+        <p>Gift: {{ order.gift }} </p>
+        <button v-on:click="submitForm">Submit Order</button>
+        <button v-on:click="showCheckout">Back to Product</button>
+    </main>
+  </div>
+  <script>
+    var webstore = new Vue({
+      el: '#webstore',
+      data: {
+        showProduct: true,
+        order: {
+          firstName: '',
+          lastName: '',
+          address: '',
+          city: '',
+          state: '',
+          method: 'Home',
+          gift: 'Do not send as Gift',
+          sendGift: 'Send as Gift',
+          dontSendGift: 'Do not send as Gift'
+        },
+
+        states: ['State 1', 'State 2', 'State 3', 'State 4'],
+        message: 'Welcome to my Pet Store !!!!',
+        product: {
+          id: 1001,
+          title: 'Cat Food 25 lb bag',
+          description: 'Irresistible cat food for your cat',
+          price: 2500,
+          image: 'product-fullsize.png',
+          availableInventory: 5
+        },
+        cart: []
+      },
+      computed: {
+        cartItemCount() {
+          return this.cart.length;
+        },
+        canAddToCart() {
+          return this.product.availableInventory > this.cartItemCount;
+        }
+      },
+      methods: {
+        addToCart() {
+          this.cart.push(this.product.id);
+          console.log(this.cart); // Log the cart contents to the console
+        },
+        showCheckout() {
+          if (this.showProduct) {
+            this.showProduct = false;
+          } else {
+            this.showProduct = true;
+          }
+        },
         submitForm() {
           alert(`Thank you for your order, ${this.order.firstName}!`);
-          
-        }
-}
-       });
-       
-    
 
-</script> 
+        }
+      }
+    });
+
+
+
+  </script>
 </body>
+
 </html>
