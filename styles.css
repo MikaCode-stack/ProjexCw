@@ -1,0 +1,31 @@
+<style>
+/* General button style */
+button {
+  background-color: #4CAF50;   /* green */
+  color: white;                /* text color */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;          /* rounded corners */
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;   /* smooth hover effect */
+}
+
+/* Hover effect */
+button:hover {
+  background-color: #45a049;   /* darker green on hover */
+}
+
+/* Disabled button style */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Special checkout button */
+.checkout-btn {
+  background-color: #007BFF;   /* blue */
+  border-radius: 50px;         /* pill shape */
+  font-weight: bold;
+}
+</style>
