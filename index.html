@@ -1,205 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Store</title>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Styles/styles.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pet Store</title>
-  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="Styles/styles.css" />
-</head>
+  <body>
+    <div id="webstore">
+      <h1>{{ message }}</h1>
+      <div id="checkoutSection">
+        <button class="checkout-btn" @click="showCheckout">
+          <span class="fa-solid fa-cart-shopping"></span> Checkout {{
+          cartItemCount }}
+        </button>
+      </div>
 
-<body>
-  <div id="webstore">
-    <h1>{{ message }}</h1>
-    <div id="checkoutSection">
-      <button class="checkout-btn" @click="showCheckout">
-        <span class="fa-solid fa-cart-shopping"></span> Checkout {{
-        cartItemCount }}
-      </button>
-    </div>
-
-    <div v-if="showProduct" class="productPage">
-      <header>
-        <h2>Our Classes</h2>
-        <div class="controls">
-          <select v-model="sortKey">
-            <option value="price">Price</option>
-            <option value="rating">Rating</option>
-            <option value="title">Title</option>
-          </select>
-
-          <button class="sort-btn" @click="toggleSortDirection">
-            <span v-if="sortAscending" class="fa-duotone fa-solid fa-arrow-up-wide-short"></span>
-            <span v-else class="fa-duotone fa-solid fa-arrow-up-short-wide"></span>
-          </button>
-
-          <div class="show-limit">
-            <label>Show:</label>
-            <select v-model.number="productsToShow">
-              <option :value="3">3</option>
-              <option :value="6">6</option>
-              <option :value="15">15</option>
+      <div v-if="showProduct" class="productPage">
+        <header>
+          <h2>Our Classes</h2>
+          <div class="controls">
+            <select v-model="sortKey">
+              <option value="price">Price</option>
+              <option value="rating">Rating</option>
+              <option value="title">Title</option>
             </select>
+
+            <button class="sort-btn" @click="toggleSortDirection">
+              <span
+                v-if="sortAscending"
+                class="fa-duotone fa-solid fa-arrow-up-wide-short"
+              ></span>
+              <span
+                v-else
+                class="fa-duotone fa-solid fa-arrow-up-short-wide"
+              ></span>
+            </button>
+
+            <div class="show-limit">
+              <label>Show:</label>
+              <select v-model.number="productsToShow">
+                <option :value="3">3</option>
+                <option :value="6">6</option>
+                <option :value="15">15</option>
+              </select>
+            </div>
+          </div>
+        </header>
+
+        <main>
+          <!-- Loop through products array -->
+          <div
+            class="product"
+            v-for="product in sortedProducts"
+            :key="product.id"
+          >
+            <img :src="product.image" :alt="product.title" />
+            <h2>{{ product.title }}</h2>
+            <p>{{ product.description }}</p>
+            <p class="price">Price: ${{ product.price.toFixed(2) }}</p>
+            <div>
+              <span
+                v-for="n in 5"
+                :key="n"
+                class="fa-star"
+                :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"
+              ></span>
+            </div>
+            <button
+              @click="addToCart(product)"
+              :disabled="!canAddToCart(product)"
+            >
+              Add to Cart
+            </button>
+            <p class="stock-status" v-if="itemsLeft(product) === 0">
+              Sold out!
+            </p>
+            <p class="stock-status" v-else-if="itemsLeft(product) <= 5">
+              Only {{ itemsLeft(product) }} places left!
+            </p>
+            <p class="stock-status" v-else>Subscribe Now!</p>
+          </div>
+        </main>
+      </div>
+
+      <!-- Checkout Section -->
+      <div v-else class="checkoutPage">
+        <h2>Checkout</h2>
+        <p>
+          <strong>First Name:</strong>
+          <input v-model.trim="order.firstName" placeholder="Your First Name" />
+        </p>
+        <p>
+          <strong>Last Name:</strong>
+          <input v-model.trim="order.lastName" placeholder="Your Last Name" />
+        </p>
+        <p>
+          <strong>Address:</strong>
+          <input v-model.trim="order.address" placeholder="Your Address" />
+        </p>
+        <p>
+          <strong>City:</strong>
+          <input v-model.trim="order.city" placeholder="Your City" />
+        </p>
+        <p>
+          <strong>District:</strong>
+          <select v-model="order.state">
+            <option disabled value="">Select District</option>
+            <option v-for="state in states" :key="state">{{ state }}</option>
+          </select>
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            id="gift"
+            v-model="order.gift"
+            true-value="Send as Gift"
+            false-value="Do not send as Gift"
+          />
+          <label for="gift">Ship as gift?</label>
+        </p>
+
+        <p>
+          <input type="radio" id="home" value="Home" v-model="order.method" />
+          <label for="home">Home</label>
+        </p>
+        <p>
+          <input
+            type="radio"
+            id="business"
+            value="Business"
+            v-model="order.method"
+          />
+          <label for="business">Business</label>
+        </p>
+
+        <h3>Order Summary</h3>
+        <p><strong>First Name:</strong> {{ order.firstName }}</p>
+        <p><strong>Last Name:</strong> {{ order.lastName }}</p>
+        <p><strong>Address:</strong> {{ order.address }}</p>
+        <p><strong>City:</strong> {{ order.city }}</p>
+        <p><strong>District:</strong> {{ order.state }}</p>
+        <p><strong>Shipping Method:</strong> {{ order.method }}</p>
+        <p><strong>Gift:</strong> {{ order.gift }}</p>
+
+        <button @click="submitForm">Submit Order</button>
+        <button @click="showCheckout">Back to Products</button>
+
+        <div v-if="showModal" class="modal">
+          <div class="submit-content">
+            <h2>Order Confirmation</h2>
+            <p>
+              Thank you, <strong>{{ order.firstName }}</strong>! Here’s your
+              order summary:
+            </p>
+
+            <ul>
+              <li v-for="item in cart" :key="item.id">
+                {{ item.title || 'Unknown Item' }} : {{ item.quantity || 0 }} ×
+                ${{ (item.price || 0).toFixed(2) }}
+              </li>
+            </ul>
+
+            <p><strong>Total:</strong> ${{ cartTotal.toFixed(2) }}</p>
+
+            <button @click="closeModal">Close</button>
           </div>
         </div>
-      </header>
-
-      <main>
-        <!-- Loop through products array -->
-        <div class="product" v-for="product in sortedProducts" :key="product.id">
-          <img :src="product.image" :alt="product.title" />
-          <h2>{{ product.title }}</h2>
-          <p>{{ product.description }}</p>
-          <p class="price">Price: ${{ product.price.toFixed(2) }}</p>
-          <div>
-            <span v-for="n in 5" :key="n" class="fa-star"
-              :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
-          </div>
-          <button @click="addToCart(product)" v-if="canAddToCart(product)">
-            Add to Cart
-          </button>
-          <button disabled v-else>Sold Out</button>
-          <p class="stock-status" v-if="itemsLeft(product) === 0">
-            Sold out!
-          </p>
-          <p class="stock-status" v-else-if="itemsLeft(product) <= 5">
-            Only {{ itemsLeft(product) }} places left!
-          </p>
-          <p class="stock-status" v-else>Subscribe Now!</p>
-        </div>
-      </main>
+      </div>
     </div>
+    <script src="Scripts/products.js"></script>
+    <script>
+      new Vue({
+        el: "#webstore",
+        data: {
+          showProduct: true,
+          message: "Discover life beyond Classroom",
+          products: products,
 
-    <!-- Checkout Section -->
-    <div v-else class="checkoutPage">
-      <h2>Checkout</h2>
-      <p>
-        <strong>First Name:</strong>
-        <input v-model.trim="order.firstName" placeholder="Your First Name" />
-      </p>
-      <p>
-        <strong>Last Name:</strong>
-        <input v-model.trim="order.lastName" placeholder="Your Last Name" />
-      </p>
-      <p>
-        <strong>Address:</strong>
-        <input v-model.trim="order.address" placeholder="Your Address" />
-      </p>
-      <p>
-        <strong>City:</strong>
-        <input v-model.trim="order.city" placeholder="Your City" />
-      </p>
-      <p>
-        <strong>District:</strong>
-        <select v-model="order.state">
-          <option disabled value="">Select District</option>
-          <option v-for="state in states" :key="state">{{ state }}</option>
-        </select>
-      </p>
-      <p>
-        <input type="checkbox" id="gift" v-model="order.gift" true-value="Send as Gift"
-          false-value="Do not send as Gift" />
-        <label for="gift">Ship as gift?</label>
-      </p>
+          cart: [],
+          sortKey: "price",
+          sortAscending: true,
+          productsToShow: 6,
+          order: {
+            firstName: "",
+            lastName: "",
+            address: "",
+            city: "",
+            state: "",
+            method: "Home",
+            gift: "Do not send as Gift",
+          },
+          states: ["State 1", "State 2", "State 3", "State 4"],
+          showModal: false,
+        },
+        computed: {
+          cartItemCount() {
+            return this.cart.reduce((sum, it) => sum + (it.quantity || 0), 0);
+          },
+          sortedProducts() {
+            return this.products
+              .slice()
+              .sort((a, b) => {
+                const modifier = this.sortAscending ? 1 : -1;
+                const valA = a[this.sortKey];
+                const valB = b[this.sortKey];
 
-      <p>
-        <input type="radio" id="home" value="Home" v-model="order.method" />
-        <label for="home">Home</label>
-      </p>
-      <p>
-        <input type="radio" id="business" value="Business" v-model="order.method" />
-        <label for="business">Business</label>
-      </p>
+                if (typeof valA === "number" && typeof valB === "number") {
+                  return (valA - valB) * modifier;
+                }
+                return (
+                  valA.toString().localeCompare(valB.toString()) * modifier
+                );
+              })
+              .slice(0, this.productsToShow); // limit display
+          },
+          cartTotal() {
+            return this.cart.reduce(
+              (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+              0
+            );
+          },
+        },
+        methods: {
+          addToCart(product) {
+            const existing = this.cart.find((c) => c.id === product.id);
+            if (existing) {
+              // increment quantity (reactive)
+              existing.quantity = (existing.quantity || 0) + 1;
+            } else {
+              // push a new object with quantity — do NOT mutate the original product object
+              this.cart.push({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                image: product.image,
+                quantity: 1,
+              });
+            }
+          },
+          cartCount(id) {
+            const item = this.cart.find((c) => c.id === id);
+            return item ? item.quantity : 0;
+          },
 
-      <h3>Order Summary</h3>
-      <p><strong>First Name:</strong> {{ order.firstName }}</p>
-      <p><strong>Last Name:</strong> {{ order.lastName }}</p>
-      <p><strong>Address:</strong> {{ order.address }}</p>
-      <p><strong>City:</strong> {{ order.city }}</p>
-      <p><strong>District:</strong> {{ order.state }}</p>
-      <p><strong>Shipping Method:</strong> {{ order.method }}</p>
-      <p><strong>Gift:</strong> {{ order.gift }}</p>
-
-      <button @click="submitForm">Submit Order</button>
-      <button @click="showCheckout">Back to Products</button>
-    </div>
-  </div>
-  <script src="Scripts/products.js"></script>
-  <script>
-    new Vue({
-      el: "#webstore",
-      data: {
-        showProduct: true,
-        message: "Discover life beyond Classroom",
-        products: products,
-
-        cart: [],
-        sortKey: "price",
-        sortAscending: true,
-        productsToShow: 6,
-        order: {
-          firstName: "",
-          lastName: "",
-          address: "",
-          city: "",
-          state: "",
-          method: "Home",
-          gift: "Do not send as Gift",
+          canAddToCart(product) {
+            return product.availableInventory > this.cartCount(product.id);
+          },
+          itemsLeft(product) {
+            const stock = Number(product.availableInventory || 0);
+            return Math.max(0, stock - this.cartCount(product.id));
+          },
+          showCheckout() {
+            this.showProduct = !this.showProduct;
+            window.scrollTo(0, 0);
+          },
+          submitForm() {
+            this.showModal = true;
+          },
+          closeModal() {
+            this.cart = [];
+            this.showModal = false;
+            alert("Thank you for your order!");
+          },
+          toggleSortDirection() {
+            this.sortAscending = !this.sortAscending;
+          },
         },
-        states: ["State 1", "State 2", "State 3", "State 4"],
-      },
-      computed: {
-        cartItemCount() {
-          return this.cart.length;
-        },
-        sortedProducts() {
-          return this.products
-            .slice()
-            .sort((a, b) => {
-              const modifier = this.sortAscending ? 1 : -1;
-              const valA = a[this.sortKey];
-              const valB = b[this.sortKey];
-
-              if (typeof valA === "number" && typeof valB === "number") {
-                return (valA - valB) * modifier;
-              }
-              return valA.toString().localeCompare(valB.toString()) * modifier;
-            })
-            .slice(0, this.productsToShow); // limit display
-        },
-      },
-      methods: {
-        addToCart(product) {
-          this.cart.push(product.id);
-        },
-        cartCount(id) {
-          return this.cart.filter((itemId) => itemId === id).length;
-        },
-        canAddToCart(product) {
-          return product.availableInventory > this.cartCount(product.id);
-        },
-        itemsLeft(product) {
-          return product.availableInventory - this.cartCount(product.id);
-        },
-        showCheckout() {
-          this.showProduct = !this.showProduct;
-          window.scrollTo(0, 0);
-        },
-        submitForm() {
-          alert(`Thank you for your order, ${this.order.firstName}!`);
-        },
-        toggleSortDirection() {
-          this.sortAscending = !this.sortAscending;
-        },
-      },
-    });
-  </script>
-</body>
-
+      });
+    </script>
+  </body>
 </html>
