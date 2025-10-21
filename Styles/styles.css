@@ -1,26 +1,16 @@
 /* ---------- General Layout ---------- */
 body {
   font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
   background-color: #b8e3e9;
   color: #333;
   margin: 0;
   padding: 0;
 }
 
-
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   text-align: center;
   color: #444;
   font-weight: 800;
-}
-
-#checkoutSection {
-  text-align: right;
-  margin-bottom: 15px;
 }
 
 #webstore {
@@ -29,6 +19,26 @@ h3 {
   padding: 20px;
 }
 
+#checkoutSection {
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+#checkoutSection .checkout-btn {
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#checkoutSection .checkout-btn:hover {
+  background-color: #0b2e33;
+}
+
+/* ---------- Header ---------- */
 header {
   display: flex;
   justify-content: space-between;
@@ -42,57 +52,83 @@ header {
 }
 
 header h2 {
-  color: #444;
-  font-weight: 600;
   margin: 0;
+  font-weight: 600;
+  color: #444;
 }
 
-.sort-controls {
+/* ---------- Sorting Controls ---------- */
+header .controls {
   display: flex;
   gap: 10px;
-  justify-content: center;
   align-items: center;
-  margin: 20px 0;
   flex-wrap: wrap;
 }
 
-.sort-controls select {
-  padding: 8px 14px;
-  border-radius: 25px;
+header .controls select {
+  padding: 10px 22px 10px 18px;
+  border-radius: 25px;          /* Rounded for modern look */
+  font-family: inherit;
+  font-weight: 700;
+  color:#fff;
   border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 15px;
+  background-color: #4F7C82;
+  font-size: 1rem;
   outline: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+select:focus {
+  border-color: #ff9f43;
+  box-shadow: 0 0 0 4px rgba(255,159,67,0.15);
+}
+
+header .controls button.sort-btn {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
   transition: all 0.3s ease;
 }
 
-#sortBtn {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 25px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
+header .controls button.sort-btn:hover {
+  background-color: #1a373b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
 }
 
-#sortBtn:hover {
-  background-color: #2e7d32;
-}
-
-
-
-/* ---------- Products ---------- */
+/* ---------- Products Grid ---------- */
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on medium screens */
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    grid-template-columns: 1fr; /* 1 per row on mobile */
+  }
 }
 
 .product {
-  background-color: #4f7c82;
+  background-color: #93B1B5;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding: 15px;
   text-align: center;
   transition: transform 0.2s;
@@ -114,94 +150,90 @@ main {
   font-weight: bold;
 }
 
-button {
-  background-color: #ff9f43;
-  color: white;
+/* ---------- Product Buttons ---------- */
+.product button {
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: #4F7C82;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
   cursor: pointer;
   margin-top: 8px;
   transition: background-color 0.3s;
 }
 
-button:hover {
+.product button:hover {
   background-color: #0b2e33;
 }
 
-button:disabled {
+.product button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
 /* ---------- Stock messages ---------- */
-span[v-if],
-span[v-else-if],
-span[v-else] {
+.stock-status {
   display: block;
   margin-top: 8px;
   font-weight: 500;
 }
 
-/* ---------- Modern Oval Input Fields ---------- */
-input:not([type="radio"]):not([type="checkbox"]),
-select {
+/* ---------- Checkout Form ---------- */
+.checkoutPage input:not([type="radio"]):not([type="checkbox"]),
+.checkoutPage select {
   width: 50%;
   padding: 10px 18px;
   border: 1.5px solid #ddd;
-  border-radius: 9999px;
+  border-radius: 9999px; /* oval look */
   background-color: #f9f9f9;
   font-size: 1rem;
   outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
   transition: all 0.25s ease;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* On focus: glow effect */
-input[type="text"]:focus,
-select:focus {
+.checkoutPage input:focus,
+.checkoutPage select:focus {
   border-color: #ff9f43;
   background-color: #fff;
-  box-shadow: 0 0 0 4px rgba(255, 159, 67, 0.15);
+  box-shadow: 0 0 0 4px rgba(255,159,67,0.15);
 }
 
-/* Placeholder styling for a softer look */
-::placeholder {
-  color: #aaa;
-  font-style: italic;
-}
-
-/* Dropdown select styling */
-select {
-  appearance: none; /* removes default arrow */
-  background-image: linear-gradient(45deg, transparent 50%, #ff9f43 50%),
-    linear-gradient(135deg, #ff9f43 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 13px) calc(50% - 3px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
+/* ---------- Checkout Buttons ---------- */
+.checkoutPage button {
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
   cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
 }
 
-/* Adjust spacing for checkbox & radio */
-input[type="radio"],
-input[type="checkbox"] {
-  accent-color: #ff9f43; /* modern color accent */
+.checkoutPage button:hover {
+  background-color: #0b2e33;
+}
+
+/* ---------- Checkbox & Radio ---------- */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #ff9f43;
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
-/* Labels stay clean and readable */
 label {
   margin-left: 4px;
   color: #555;
   font-weight: 500;
 }
 
-/* ---------- Buttons stay consistent ---------- */
-div[v-else] button {
-  border-radius: 9999px;
-  padding: 10px 20px;
-  font-weight: 600;
+/* ---------- Placeholder ---------- */
+::placeholder {
+  color: #aaa;
+  font-style: italic;
 }
