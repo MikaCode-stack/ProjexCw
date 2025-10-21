@@ -104,7 +104,7 @@ var products = [
         description: "Hands-on introduction to Python and logical problem solving.",
         price: 55.00,
         image: "images/Programming.jpg",
-        availableInventory: 9,
+        availableInventory: 8,
         rating: 5
     },
     {
