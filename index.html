@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="Styles/styles.css" />
 </head>
 
-
 <body>
   <div id="webstore">
     <h1>{{ message }}</h1>
@@ -39,8 +38,16 @@
             <span v-if="sortAscending" class="fa-duotone fa-solid fa-arrow-up-wide-short"></span>
             <span v-else class="fa-duotone fa-solid fa-arrow-up-short-wide"></span>
           </button>
-        </div>
 
+          <div class="show-limit">
+            <label>Show:</label>
+            <select v-model.number="productsToShow">
+              <option :value="3">3</option>
+              <option :value="6">6</option>
+              <option :value="15">15</option>
+            </select>
+          </div>
+        </div>
       </header>
 
       <main>
@@ -135,6 +142,7 @@
         cart: [],
         sortKey: "price",
         sortAscending: true,
+        productsToShow: 6,
         order: {
           firstName: "",
           lastName: "",
@@ -151,21 +159,20 @@
           return this.cart.length;
         },
         sortedProducts() {
-          return this.products.slice().sort((a, b) => {
-            const modifier = this.sortAscending ? 1 : -1;
-            const valA = a[this.sortKey];
-            const valB = b[this.sortKey];
+          return this.products
+            .slice()
+            .sort((a, b) => {
+              const modifier = this.sortAscending ? 1 : -1;
+              const valA = a[this.sortKey];
+              const valB = b[this.sortKey];
 
-            // For numerical comparison(ratings, price)
-            if (typeof valA === "number" && typeof valB === "number") {
-              return (valA - valB) * modifier;
-            }
-
-            // For string comparison (title)
-            return valA.toString().localeCompare(valB.toString()) * modifier;
-          });
-        }
-
+              if (typeof valA === "number" && typeof valB === "number") {
+                return (valA - valB) * modifier;
+              }
+              return valA.toString().localeCompare(valB.toString()) * modifier;
+            })
+            .slice(0, this.productsToShow); // limit display
+        },
       },
       methods: {
         addToCart(product) {
@@ -189,8 +196,8 @@
         },
         toggleSortDirection() {
           this.sortAscending = !this.sortAscending;
-        }
-      }
+        },
+      },
     });
   </script>
 </body>
