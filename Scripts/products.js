@@ -1,54 +1,55 @@
 var products = [
     {
         id:1001,
-        title:"Cat Food 25 lb bag",
-        description:"Irresisitible cat food for your cat",
+        title:"Mathematics basics",
+        description:"Discover the world of numbers",
         price: 20.00,
-        image: "images/product-fullsize.png",
+        image: "images/maths-course.jpg",
         availableInventory: 3,
         rating:3
     },
     {
         id:1002,
-        title:"Cat House",
-        description:"Irresisitible cat House for your cat",
+        title:"English Literature",
+        description:"Shakespeare and more",
         price: 2000,
-        image: "images/cat-house.jpg",
+        image: "images/EngLit.jpg",
         availableInventory: 5,
         rating:4
     },
     {
         id:1003,
-        title:"Cat Litter",
+        title:"Algebra",
+        description:"Advanced Algebra course",
         price: 1000,
-        image: "images/cat-litter.jpg",
+        image: "images/Algebra.jpg",
         availableInventory: 9,
         rating:5
     },
     {
         id:1004,
-        title:"Laser Pointer",
-        description:"Irresisitible laser pointer for your cat",
+        title:"Economics",
+        description:"Dive in the world of Economics",
         price: 25.99,
-        image: "images/laser-pointer.jpg",
+        image: "images/Econ.png",
         availableInventory: 9,
         rating:4
     },
     {
         id:1005,
-        title:"Cat Toy Mindy Mouse",
-        description:"Irresisitible cat toy for your cat",
+        title:"Science and Technology",
+        description:"Learn about the innovations and the world around you",
         price: 3.99,
-        image: "images/Mindy_Mouse_cat_toy.jpg",
+        image: "images/Science&Tech.jpg",
         availableInventory: 5,
         rating:3
     },
     {
         id:1006,
-        title:"Cat Yarn",
-        description:"Irresisitible cat yarn for your cat",
+        title:"Geography",
+        description:"Introductory course to Geography",
         price: 2.99,
-        image: "images/yarn.jpg",
+        image: "images/Geography.jpg",
         availableInventory: 4,
         rating:2
     },
