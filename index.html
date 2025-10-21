@@ -7,8 +7,7 @@
   <title>Pet Store</title>
   <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="./products.js"></script>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="Styles/styles.css">
 </head>
 
 <body>
@@ -31,17 +30,15 @@
           <p>{{ product.description }}</p>
           <p class="price">Price: ${{ product.price.toFixed(2) }}</p>
           <div>
-            <span v-for="n in 5" :key="n" class="fa-star" :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
+            <span v-for="n in 5" :key="n" class="fa-star"
+              :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
           </div>
           <button @click="addToCart(product)" v-if="canAddToCart(product)">Add to Cart</button>
           <button disabled v-else>Sold Out</button>
-          <span v-if="itemsLeft(product) === 0">Sold out!</span>
-          <span v-else-if="itemsLeft(product) <= 5">
-            Only {{ itemsLeft(product) }} left!
-          </span>
-          <span v-else>
-            Buy Now!
-          </span>
+          <p class="stock-status" v-if="itemsLeft(product) === 0">Sold out!</p>
+          <p class="stock-status" v-else-if="itemsLeft(product) <= 5">Only {{ itemsLeft(product) }} left!</p>
+          <p class="stock-status" v-else>Buy Now!</p>
+
 
         </div>
       </main>
@@ -83,13 +80,13 @@
       <button @click="showCheckout">Back to Products</button>
     </div>
   </div>
-
+  <script src="Scripts/products.js"></script>
   <script>
     new Vue({
       el: '#webstore',
       data: {
         showProduct: true,
-        message: 'Welcome to my Pet Store 🐶🐱',
+        message: 'Discover life beyond Classroom',
         products: products,
 
         cart: [],
@@ -137,7 +134,9 @@
         },
         showCheckout() {
           this.showProduct = !this.showProduct;
+          window.scrollTo(0, 0);
         },
+
         submitForm() {
           alert(`Thank you for your order, ${this.order.firstName}!`);
         }
