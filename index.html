@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pet Store</title>
+    <title>MindForge</title>
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
     <link
       rel="stylesheet"
@@ -16,11 +16,43 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="Styles/styles.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="images/site.webmanifest" />
   </head>
 
   <body>
     <div id="webstore">
-      <h1>{{ message }}</h1>
+      <header class="site-header">
+        <div class="logo-container">
+          <img src="images/favicon-32x32.png" alt="Website Logo" class="logo" />
+          <h1 class="site-title">{{message}}</h1>
+        </div>
+
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+
       <div id="checkoutSection">
         <button class="checkout-btn" @click="showCheckout">
           <span class="fa-solid fa-cart-shopping"></span> Checkout {{
@@ -187,7 +219,7 @@
         el: "#webstore",
         data: {
           showProduct: true,
-          message: "Discover life beyond Classroom",
+          message: "Welcome to MindForge: Where minds are shaped",
           products: products,
 
           cart: [],
