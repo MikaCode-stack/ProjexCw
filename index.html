@@ -27,7 +27,7 @@
           <div class="site-title">MindForge</div>
         </div>
       </div>
-
+      <!--Navigation between main(product page), admin page(CRUD) and Checkout Section-->
       <div class="top-actions">
         <div class="checkoutInfo">
           <div style="font-size: 14px; color: #333; font-weight: bold;">
@@ -45,7 +45,6 @@
         </div>
         <button class="admin-btn" @click="toggleAdmin"> {{ view === 'admin' ? 'Back to Products' : 'Admin' }}</button>
       </div>
-
     </header>
 
     <!-- Product add/edit form -->
@@ -299,9 +298,9 @@
     </div>
 
   </div>
-
+  
+  <!--Script for Vue.js app-->
   <script>
-    //Script for Vue.js app
     new Vue({
       el: "#app",
       data() {
@@ -408,18 +407,21 @@
       methods: {
 
         toggleProducts(){
+          //Showing Products page 
           this.view = 'products';
           window.scrollTo(0,0);
           applyFilters();
         },
 
-        toggleAdmin() {
+        toggleAdmin() { 
+          //Showing admin(CRUD) page 
           this.view = this.view === 'admin' ? 'products' : 'admin';
           window.scrollTo(0,0);
           if(this.view === 'admin' && !this.editMode) this.resetForm();
         },
 
         toggleCheckout(){
+          //Showing Checkout section
           this.view = this.view === 'checkout' ? 'products' : 'checkout';
           window.scrollTo(0,0);
         },
