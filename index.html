@@ -47,7 +47,7 @@
 
 
 
-    <!-- PRODUCT & MANAGEMENT SECTION (from test3.html, adapted to Vue 2) -->
+    <!-- PRODUCT & MANAGEMENT SECTION-->
     <div v-if="showProduct">
       <h2 style="margin-bottom: 10px">Collection Manager (Products)</h2>
 
@@ -110,7 +110,6 @@
           <input v-model="form.title" type="text" placeholder="Title" required />
           <input v-model.number="form.price" type="number" step="0.01" placeholder="Price" required />
           <textarea v-model="form.description" placeholder="Description" required></textarea>
-          <input v-model="form.category" type="text" placeholder="Category" />
           <input v-model.number="form.stock" type="number" placeholder="Stock" />
           <input v-model="form.image" type="text" placeholder="Image URL" />
           <input v-model.number="form.rating" type="number" min="0" max="5" placeholder="Rating (0–5)" />
@@ -134,7 +133,7 @@
         <div v-for="product in displayProducts" :key="product._id || product.id" class="product-card">
           <h3 v-html="highlightMatch(product.title || product.name || 'Unnamed')"></h3>
           <img v-if="product.image" :src="product.image" :alt="product.title"
-            style="width: 100%; border-radius: 10px; max-height: 80%" />
+            style="width: 100%; border-radius: 10px; max-height: 50%" />
           <p v-if="product.price" class="price">
             $ {{ (product.price || 0).toFixed(2) }}
           </p>
@@ -187,7 +186,7 @@
       </div>
     </div>
 
-    <!-- CHECKOUT / CART SECTION (from index.html) -->
+    <!-- CHECKOUT Page -->
     <div v-else class="checkoutPage">
       <h2>Checkout</h2>
 
@@ -272,7 +271,7 @@
   </div>
 
   <script>
-    // Combined Vue 2 App
+    //Script for Vue.js app
     new Vue({
       el: "#app",
       data() {
@@ -283,14 +282,14 @@
           messageType: "",
           loading: false,
 
-          // API (from test3.html)
+          // API
           API_BASE: "http://localhost:3000", // change if you have API
           collectionName: "products",
 
           // Products (all products + filtered)
           allProducts: [],
           displayProducts: [],
-          // Local fallback sample (so UI works without an API)
+          // Local fallback sample (test cases, if API calls are not working)
           sampleProducts: [
             {
               id: "p1",
@@ -324,7 +323,7 @@
             },
           ],
 
-          // form & edit
+          // form to add a new product or edit an existing product
           form: {
             title: "",
             price: 0,
@@ -343,7 +342,7 @@
           sortOrder: "asc",
           maxResults: 50,
 
-          // Cart & checkout (from index.html)
+          // Cart & checkout 
           cart: [],
           sortKey: "price",
           sortAscending: true,
@@ -378,7 +377,7 @@
       },
       methods: {
         /* -------------------------
-        Product collection methods (from test3.html) adapted for Vue 2
+        Products collection methods
       ------------------------- */
         async fetchCollection() {
           if (!this.collectionName) {
