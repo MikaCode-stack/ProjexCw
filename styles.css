@@ -1,0 +1,366 @@
+/* ---------- General Layout ---------- */
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #b8e3e9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: #444;
+  font-weight: 800;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background-color: inherit;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0px; /* Space between logo and text */
+}
+
+.logo {
+  height: 50px;  /* Adjust depending on header height */
+  width: auto;
+}
+
+.site-title {
+  font-size: 1.8rem;
+  color: #1b1b1b;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* From Uiverse.io by CodeGame2010 */ 
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 50px;
+  border-radius: 50px;
+  border: 0;
+  outline: 0;
+  font-size: 18px;
+  background: #08f;
+  color: #fff;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #68ff03;
+}
+
+button:hover svg {
+  margin: 0 0 0 25px;
+  transition: 0.3s;
+}
+
+button:not(:hover) svg {
+  transition: 0.3s;
+}
+
+button:active {
+  transform: scale(0.9, 0.9);
+  transition: 200ms;
+}
+
+button:not(:active) {
+  transition: 200ms;
+}
+
+.top-actions{
+  display: flex;
+    align-content: stretch;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+input,
+textarea {
+   width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.controls {
+  background-color: #93B1B5;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#checkoutSection {
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+#checkoutSection .checkout-btn {
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#checkoutSection .checkout-btn:hover {
+  background-color: #0b2e33;
+}
+
+/* ---------- Header ---------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #93B1B5;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+header h2 {
+  margin: 0;
+  font-weight: 600;
+  color: #444;
+}
+
+
+
+/* Product Form (for adding a new product)*/
+.product-form form{
+  background: #93B1B5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+.product-form button {
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.product-form button:hover {
+  background-color: #0b2e33;
+}
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.product-card #img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+
+}
+
+.product-card {
+  background: #93B1B5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 600px;
+}
+
+.product-card h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+.price {
+  color: #444;
+  font-weight: bold;
+}
+/* ---------- product-card Buttons ---------- */
+.product-card button {
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.product-card button:hover {
+  background-color: #0b2e33;
+}
+
+.product-card button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ---------- Stock messages ---------- */
+.stock-status {
+  display: block;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* ---------- Checkout Form ---------- */
+.checkoutPage input:not([type="radio"]):not([type="checkbox"]),
+.checkoutPage select {
+  width: 50%;
+  padding: 10px 18px;
+  border: 1.5px solid #ddd;
+  border-radius: 9999px; /* oval look */
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.25s ease;
+}
+
+.checkoutPage input:focus,
+.checkoutPage select:focus {
+  border-color: #ff9f43;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(255,159,67,0.15);
+}
+
+/* ---------- Checkout Buttons ---------- */
+.checkoutPage button {
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: #4F7C82;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.checkoutPage button:hover {
+  background-color: #0b2e33;
+}
+
+/* ---------- Checkbox & Radio ---------- */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #ff9f43;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+label {
+  margin-left: 4px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* ---------- Placeholder ---------- */
+::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.submit-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 30px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submit-content h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.submit-content ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 15px 0;
+}
+
+.submit-content button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.submit-content button:hover {
+  background-color: #0056b3;
+}
