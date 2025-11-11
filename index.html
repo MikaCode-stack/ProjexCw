@@ -1,72 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MindForge</title>
-    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="Styles/styles.css" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="images/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="images/favicon-16x16.png"
-    />
-    <link rel="manifest" href="images/site.webmanifest" />
-  </head>
 
-  <body>
-    <!--div id="webstore">
-      <header class="site-header">
-        <div class="logo-container">
-          <img src="images/favicon-32x32.png" alt="Website Logo" class="logo" />
-          <h1 class="site-title">{{message}}</h1>
-        </div-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindForge</title>
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="Styles/styles.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
+  <link rel="manifest" href="images/site.webmanifest" />
+</head>
 
-        <div id="app">
+<body>
+  <div id="app">
     <header class="site-header">
-      <div style="display:flex;align-items:center">
-        <img class="logo" src="images/favicon-32x32.png" alt="Website Logo" class="logo"/>
-        <div style="margin-left:10px">
+      <div style="display: flex; align-items: center">
+        <img class="logo" src="images/favicon-32x32.png" alt="Website Logo" class="logo" />
+        <div style="margin-left: 10px">
           <div class="site-title">MindForge</div>
         </div>
       </div>
 
       <div class="top-actions">
-        <div style="font-size:14px;color:#333">Items in cart: <strong>{{ cartItemCount }}</strong></div>
+        <div style="font-size: 14px; color: #333; font-weight: bold;">
+          Items in cart: <strong>{{ cartItemCount }}</strong>
+        </div>
         <button class="checkout-btn" @click="toggleView">
-          <span class="fa fa-cart-shopping"></span>
+          <svg class="icon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+            stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
           {{ showProduct ? 'Checkout (' + cartItemCount + ')' : 'Back to Products' }}
         </button>
       </div>
+
     </header>
+
+
 
     <!-- PRODUCT & MANAGEMENT SECTION (from test3.html, adapted to Vue 2) -->
     <div v-if="showProduct">
-      <h2 style="margin-bottom:10px">Collection Manager (Products)</h2>
+      <h2 style="margin-bottom: 10px">Collection Manager (Products)</h2>
 
-      <div v-if="message" :class="messageType" style="margin-bottom:10px;padding:8px;border-radius:6px">
+      <div v-if="message" :class="messageType" style="margin-bottom: 10px; padding: 8px; border-radius: 6px">
         {{ message }}
       </div>
 
@@ -74,10 +59,11 @@
       <div class="controls" v-if="allProducts.length > 0">
         <h3>Search & Sort</h3>
         <div>
-          <input v-model="searchQuery" @input="applyFilters" placeholder="🔍 Search by title, description, or category..." />
+          <input v-model="searchQuery" @input="applyFilters"
+            placeholder="🔍 Search by title, description, or category..." />
         </div>
 
-        <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+        <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap">
           <div>
             <label>Sort By:</label>
             <select v-model="sortField" @change="applyFilters">
@@ -102,15 +88,18 @@
             <input type="number" v-model.number="maxResults" min="1" max="500" @change="applyFilters" />
           </div>
 
-          <div style="align-self:end">
+          <div style="align-self: end">
             <button @click="resetFilters" type="button">Reset Filters</button>
           </div>
         </div>
 
-        <div style="margin-top:10px;font-size:13px;color:#555">
-          Showing {{ displayProducts.length }} of {{ allProducts.length }} document(s)
-          <span v-if="searchQuery"> | Searching for: "{{ searchQuery }}"</span>
-          <span v-if="sortField"> | Sorted by: {{ sortField }} ({{ sortOrder }})</span>
+        <div style="margin-top: 10px; font-size: 13px; color: #555">
+          Showing {{ displayProducts.length }} of {{ allProducts.length }}
+          document(s)
+          <span v-if="searchQuery">
+            | Searching for: "{{ searchQuery }}"</span>
+          <span v-if="sortField">
+            | Sorted by: {{ sortField }} ({{ sortOrder }})</span>
         </div>
       </div>
 
@@ -126,9 +115,13 @@
           <input v-model="form.image" type="text" placeholder="Image URL" />
           <input v-model.number="form.rating" type="number" min="0" max="5" placeholder="Rating (0–5)" />
 
-          <div class="form-actions" style="margin-top:8px">
-            <button type="submit">{{ editMode ? 'Update' : 'Create' }}</button>
-            <button type="button" @click="cancelEdit" v-if="editMode">Cancel</button>
+          <div class="form-actions" style="margin-top: 8px">
+            <button type="submit">
+              {{ editMode ? 'Update' : 'Create' }}
+            </button>
+            <button type="button" @click="cancelEdit" v-if="editMode">
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -137,31 +130,49 @@
       <div v-if="loading" class="loading">Loading...</div>
 
       <!-- Products grid (displayProducts) -->
-      <div v-else class="products-grid" style="margin-top:12px">
+      <div v-else class="products-grid" style="margin-top: 12px">
         <div v-for="product in displayProducts" :key="product._id || product.id" class="product-card">
           <h3 v-html="highlightMatch(product.title || product.name || 'Unnamed')"></h3>
-          <img v-if="product.image" :src="product.image" :alt="product.title" style="width: 100%; border-radius: 10px; max-height: 80%;"/>
-          <p v-if="product.price" class="price">$ {{ (product.price || 0).toFixed(2) }}</p>
+          <img v-if="product.image" :src="product.image" :alt="product.title"
+            style="width: 100%; border-radius: 10px; max-height: 80%" />
+          <p v-if="product.price" class="price">
+            $ {{ (product.price || 0).toFixed(2) }}
+          </p>
           <p v-if="product.description" v-html="highlightMatch(product.description)"></p>
-          <p v-if="product.category" class="category" style="font-size:12px;color:#666" v-html="highlightMatch(product.category)"></p>
-          <p v-if="product.stock !== undefined" class="stock" style="font-size:12px;color:#666">Stock: {{ product.stock }}</p>
+          <p v-if="product.category" class="category" style="font-size: 12px; color: #666"
+            v-html="highlightMatch(product.category)"></p>
+          <p v-if="product.stock !== undefined" class="stock" style="font-size: 12px; color: #666">
+            Stock: {{ product.stock }}
+          </p>
 
-          <div v-if="product.rating !== undefined && product.rating !== null" style="margin-top:6px">
-            <span v-for="n in 5" :key="n" class="fa-star" :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
-            <span style="font-size:12px;color:#555">({{ product.rating }}/5)</span>
+          <div v-if="product.rating !== undefined && product.rating !== null" style="margin-top: 6px">
+            <span v-for="n in 5" :key="n" class="fa-star"
+              :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
+            <span style="font-size: 12px; color: #555">({{ product.rating }}/5)</span>
           </div>
 
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="btn-edit" @click="editProduct(product)">Edit</button>
-            <button class="btn-delete" @click="deleteProduct(product._id || product.id)">Delete</button>
+          <div style="display: flex; gap: 8px; margin-top: 10px">
+            <button class="btn-edit" @click="editProduct(product)">
+              Edit
+            </button>
+            <button class="btn-delete" @click="deleteProduct(product._id || product.id)">
+              Delete
+            </button>
             <!-- Add to cart button (cart logic from index.html) -->
-            <button :disabled="!canAddToCart(product)" style="margin-left:auto;padding:8px;border-radius:6px;border:0;background:#2563eb;color:white" @click="addToCart(product)">
+            <button :disabled="!canAddToCart(product)" style="
+                  margin-left: auto;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 0;
+                  background: #2563eb;
+                  color: white;
+                " @click="addToCart(product)">
               Add to Cart
             </button>
           </div>
 
-          <div style="margin-top:8px;font-size:13px;color:#666">
-            <span v-if="itemsLeft(product) === 0" style="color:#ef4444">Sold out!</span>
+          <div style="margin-top: 8px; font-size: 13px; color: #666">
+            <span v-if="itemsLeft(product) === 0" style="color: #ef4444">Sold out!</span>
             <span v-else-if="itemsLeft(product) <= 5">Only {{ itemsLeft(product) }} left!</span>
             <span v-else>Available</span>
           </div>
@@ -180,10 +191,18 @@
     <div v-else class="checkoutPage">
       <h2>Checkout</h2>
 
-      <p><strong>First Name:</strong><input v-model.trim="order.firstName" placeholder="Your First Name" /></p>
-      <p><strong>Last Name:</strong><input v-model.trim="order.lastName" placeholder="Your Last Name" /></p>
-      <p><strong>Address:</strong><input v-model.trim="order.address" placeholder="Your Address" /></p>
-      <p><strong>City:</strong><input v-model.trim="order.city" placeholder="Your City" /></p>
+      <p>
+        <strong>First Name:</strong><input v-model.trim="order.firstName" placeholder="Your First Name" />
+      </p>
+      <p>
+        <strong>Last Name:</strong><input v-model.trim="order.lastName" placeholder="Your Last Name" />
+      </p>
+      <p>
+        <strong>Address:</strong><input v-model.trim="order.address" placeholder="Your Address" />
+      </p>
+      <p>
+        <strong>City:</strong><input v-model.trim="order.city" placeholder="Your City" />
+      </p>
 
       <p>
         <strong>District:</strong>
@@ -194,13 +213,16 @@
       </p>
 
       <p>
-        <input type="checkbox" id="gift" v-model="order.gift" true-value="Send as Gift" false-value="Do not send as Gift" />
+        <input type="checkbox" id="gift" v-model="order.gift" true-value="Send as Gift"
+          false-value="Do not send as Gift" />
         <label for="gift">Ship as gift?</label>
       </p>
 
       <p>
-        <input type="radio" id="home" value="Home" v-model="order.method" /> <label for="home">Home</label>
-        <input type="radio" id="business" value="Business" v-model="order.method" style="margin-left:10px" /> <label for="business">Business</label>
+        <input type="radio" id="home" value="Home" v-model="order.method" />
+        <label for="home">Home</label>
+        <input type="radio" id="business" value="Business" v-model="order.method" style="margin-left: 10px" />
+        <label for="business">Business</label>
       </p>
 
       <h3>Order Summary</h3>
@@ -214,12 +236,15 @@
 
       <h4>Cart Items</h4>
       <ul>
-        <li v-for="item in cart" :key="item.id">{{ item.title || 'Item' }} : {{ item.quantity || 0 }} × ${{ (item.price || 0).toFixed(2) }}</li>
+        <li v-for="item in cart" :key="item.id">
+          {{ item.title || 'Item' }} : {{ item.quantity || 0 }} × ${{
+          (item.price || 0).toFixed(2) }}
+        </li>
       </ul>
 
       <p><strong>Total:</strong> ${{ cartTotal.toFixed(2) }}</p>
 
-      <div style="display:flex;gap:8px;margin-top:8px">
+      <div style="display: flex; gap: 8px; margin-top: 8px">
         <button @click="submitForm">Submit Order</button>
         <button @click="toggleView">Back to Products</button>
       </div>
@@ -227,12 +252,18 @@
       <div v-if="showModal" class="modal">
         <div class="submit-content">
           <h2>Order Confirmation</h2>
-          <p>Thank you, <strong>{{ order.firstName }}</strong>! Here’s your order summary:</p>
+          <p>
+            Thank you, <strong>{{ order.firstName }}</strong>! Here’s your
+            order summary:
+          </p>
           <ul>
-            <li v-for="item in cart" :key="item.id">{{ item.title || 'Unknown Item' }} : {{ item.quantity || 0 }} × ${{ (item.price || 0).toFixed(2) }}</li>
+            <li v-for="item in cart" :key="item.id">
+              {{ item.title || 'Unknown Item' }} : {{ item.quantity || 0 }} ×
+              ${{ (item.price || 0).toFixed(2) }}
+            </li>
           </ul>
           <p><strong>Total:</strong> ${{ cartTotal.toFixed(2) }}</p>
-          <div style="display:flex;gap:8px;margin-top:8px">
+          <div style="display: flex; gap: 8px; margin-top: 8px">
             <button @click="closeModal">Close</button>
           </div>
         </div>
@@ -243,56 +274,91 @@
   <script>
     // Combined Vue 2 App
     new Vue({
-      el: '#app',
+      el: "#app",
       data() {
         return {
           // UI
           showProduct: true,
-          message: '',
-          messageType: '',
+          message: "",
+          messageType: "",
           loading: false,
 
           // API (from test3.html)
-          API_BASE: 'http://localhost:3000', // change if you have API
-          collectionName: 'products',
+          API_BASE: "http://localhost:3000", // change if you have API
+          collectionName: "products",
 
           // Products (all products + filtered)
           allProducts: [],
           displayProducts: [],
           // Local fallback sample (so UI works without an API)
           sampleProducts: [
-            { id: 'p1', title: 'Mathematics basics', description: 'Discover the world of numbers', price: 20.00, image: 'https://picsum.photos/seed/math/400/250', stock: 10, rating: 4, category: 'Math' },
-            { id: 'p2', title: 'English Literature', description: 'Shakespeare and more', price: 25.00, image: 'https://picsum.photos/seed/eng/400/250', stock: 5, rating: 5, category: 'Literature' },
-            { id: 'p3', title: 'Intro to Programming', description: 'Learn to code', price: 50.00, image: 'https://picsum.photos/seed/code/400/250', stock: 12, rating: 5, category: 'Computer Science' }
+            {
+              id: "p1",
+              title: "Mathematics basics",
+              description: "Discover the world of numbers",
+              price: 20.0,
+              image: "https://picsum.photos/seed/math/400/250",
+              stock: 10,
+              rating: 4,
+              category: "Math",
+            },
+            {
+              id: "p2",
+              title: "English Literature",
+              description: "Shakespeare and more",
+              price: 25.0,
+              image: "https://picsum.photos/seed/eng/400/250",
+              stock: 5,
+              rating: 5,
+              category: "Literature",
+            },
+            {
+              id: "p3",
+              title: "Intro to Programming",
+              description: "Learn to code",
+              price: 50.0,
+              image: "https://picsum.photos/seed/code/400/250",
+              stock: 12,
+              rating: 5,
+              category: "Computer Science",
+            },
           ],
 
           // form & edit
-          form: { title:'', price:0, description:'', category:'', stock:0, image:'', rating:0 },
+          form: {
+            title: "",
+            price: 0,
+            description: "",
+            category: "",
+            stock: 0,
+            image: "",
+            rating: 0,
+          },
           editMode: false,
           editingId: null,
 
           // search & sort & limits
-          searchQuery: '',
-          sortField: '',
-          sortOrder: 'asc',
+          searchQuery: "",
+          sortField: "",
+          sortOrder: "asc",
           maxResults: 50,
 
           // Cart & checkout (from index.html)
           cart: [],
-          sortKey: 'price',
+          sortKey: "price",
           sortAscending: true,
           productsToShow: 6,
           order: {
-            firstName: '',
-            lastName: '',
-            address: '',
-            city: '',
-            state: '',
-            method: 'Home',
-            gift: 'Do not send as Gift'
+            firstName: "",
+            lastName: "",
+            address: "",
+            city: "",
+            state: "",
+            method: "Home",
+            gift: "Do not send as Gift",
           },
-          states: ['State 1','State 2','State 3','State 4'],
-          showModal: false
+          states: ["State 1", "State 2", "State 3", "State 4"],
+          showModal: false,
         };
       },
       created() {
@@ -304,16 +370,19 @@
           return this.cart.reduce((sum, it) => sum + (it.quantity || 0), 0);
         },
         cartTotal() {
-          return this.cart.reduce((sum, it) => sum + (it.quantity || 0) * (it.price || 0), 0);
-        }
+          return this.cart.reduce(
+            (sum, it) => sum + (it.quantity || 0) * (it.price || 0),
+            0
+          );
+        },
       },
       methods: {
         /* -------------------------
-          Product collection methods (from test3.html) adapted for Vue 2
-        ------------------------- */
+        Product collection methods (from test3.html) adapted for Vue 2
+      ------------------------- */
         async fetchCollection() {
           if (!this.collectionName) {
-            this.showMessage('Enter collection name.', 'error');
+            this.showMessage("Enter collection name.", "error");
             return;
           }
 
@@ -324,7 +393,11 @@
 
           // attempt API fetch; if that fails (CORS / not running), fallback to sampleProducts
           try {
-            const resp = await fetch(`${this.API_BASE}/collections/${encodeURIComponent(this.collectionName)}`);
+            const resp = await fetch(
+              `${this.API_BASE}/collections/${encodeURIComponent(
+                this.collectionName
+              )}`
+            );
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
             if (!Array.isArray(data) || data.length === 0) {
@@ -336,44 +409,64 @@
             // use API results
             this.displayProducts = [...this.allProducts];
             this.applyFilters();
-            this.showMessage(`Loaded ${this.allProducts.length} document(s).`, 'success');
+            this.showMessage(
+              `Loaded ${this.allProducts.length} document(s).`,
+              "success"
+            );
           } catch (err) {
             // fallback to local sample
             this.allProducts = [...this.sampleProducts];
             this.displayProducts = [...this.allProducts];
             this.applyFilters();
-            this.showMessage('Using local sample products (API unavailable).', 'info');
+            this.showMessage(
+              "Using local sample products (API unavailable).",
+              "info"
+            );
           } finally {
             this.loading = false;
           }
         },
 
-        performSearch() { this.applyFilters(); },
-        applySorting() { this.applyFilters(); },
+        performSearch() {
+          this.applyFilters();
+        },
+        applySorting() {
+          this.applyFilters();
+        },
         applyFilters() {
           let results = [...this.allProducts];
 
           // search
           if (this.searchQuery && this.searchQuery.trim()) {
             const query = this.searchQuery.toLowerCase();
-            results = results.filter(product => {
-              const title = (product.title || product.name || '').toString().toLowerCase();
-              const description = (product.description || '').toString().toLowerCase();
-              const category = (product.category || '').toString().toLowerCase();
-              return title.includes(query) || description.includes(query) || category.includes(query);
+            results = results.filter((product) => {
+              const title = (product.title || product.name || "")
+                .toString()
+                .toLowerCase();
+              const description = (product.description || "")
+                .toString()
+                .toLowerCase();
+              const category = (product.category || "")
+                .toString()
+                .toLowerCase();
+              return (
+                title.includes(query) ||
+                description.includes(query) ||
+                category.includes(query)
+              );
             });
           }
 
           // sort
           if (this.sortField) {
-            results.sort((a,b) => {
+            results.sort((a, b) => {
               let aVal = a[this.sortField];
               let bVal = b[this.sortField];
-              if (aVal === undefined || aVal === null) aVal = '';
-              if (bVal === undefined || bVal === null) bVal = '';
-              if (typeof aVal === 'string') aVal = aVal.toLowerCase();
-              if (typeof bVal === 'string') bVal = bVal.toLowerCase();
-              if (this.sortOrder === 'asc') {
+              if (aVal === undefined || aVal === null) aVal = "";
+              if (bVal === undefined || bVal === null) bVal = "";
+              if (typeof aVal === "string") aVal = aVal.toLowerCase();
+              if (typeof bVal === "string") bVal = bVal.toLowerCase();
+              if (this.sortOrder === "asc") {
                 return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
               } else {
                 return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
@@ -387,9 +480,9 @@
         },
 
         resetFilters() {
-          this.searchQuery = '';
-          this.sortField = '';
-          this.sortOrder = 'asc';
+          this.searchQuery = "";
+          this.sortField = "";
+          this.sortOrder = "asc";
           this.maxResults = 50;
           this.displayProducts = [...this.allProducts];
           this.applyFilters();
@@ -397,9 +490,11 @@
 
         highlightMatch(text) {
           if (!this.searchQuery || !text) return text;
-          const q = this.searchQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); // escape
-          const regex = new RegExp('(' + q + ')', 'gi');
-          return text.toString().replace(regex, '<span class="highlight">$1</span>');
+          const q = this.searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
+          const regex = new RegExp("(" + q + ")", "gi");
+          return text
+            .toString()
+            .replace(regex, '<span class="highlight">$1</span>');
         },
 
         async submitProduct() {
@@ -411,40 +506,64 @@
             if (this.editMode) {
               // optimistic: if API works, call it; otherwise update locally
               try {
-                const resp = await fetch(`${this.API_BASE}/collections/${this.collectionName}/${this.editingId}`, {
-                  method: 'PUT',
-                  headers: {'Content-Type':'application/json'},
-                  body: JSON.stringify(payload)
-                });
+                const resp = await fetch(
+                  `${this.API_BASE}/collections/${this.collectionName}/${this.editingId}`,
+                  {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  }
+                );
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                this.showMessage('Product updated successfully!', 'success');
+                this.showMessage("Product updated successfully!", "success");
               } catch (err) {
                 // local fallback: update in-place
-                const idx = this.allProducts.findIndex(p => (p._id || p.id) === this.editingId);
-                if (idx !== -1) this.$set(this.allProducts, idx, Object.assign({}, this.allProducts[idx], payload));
-                this.showMessage('Product updated locally (API unavailable).', 'info');
+                const idx = this.allProducts.findIndex(
+                  (p) => (p._id || p.id) === this.editingId
+                );
+                if (idx !== -1)
+                  this.$set(
+                    this.allProducts,
+                    idx,
+                    Object.assign({}, this.allProducts[idx], payload)
+                  );
+                this.showMessage(
+                  "Product updated locally (API unavailable).",
+                  "info"
+                );
               }
             } else {
               try {
-                const resp = await fetch(`${this.API_BASE}/collections/${this.collectionName}`, {
-                  method:'POST',
-                  headers:{'Content-Type':'application/json'},
-                  body: JSON.stringify(payload)
-                });
+                const resp = await fetch(
+                  `${this.API_BASE}/collections/${this.collectionName}`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  }
+                );
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                this.showMessage('Product created successfully!', 'success');
+                this.showMessage("Product created successfully!", "success");
               } catch (err) {
                 // local fallback: create locally with generated id
-                const newId = 'local-' + Date.now();
-                this.allProducts.unshift(Object.assign({id:newId}, payload));
-                this.showMessage('Product created locally (API unavailable).', 'info');
+                const newId = "local-" + Date.now();
+                this.allProducts.unshift(
+                  Object.assign({ id: newId }, payload)
+                );
+                this.showMessage(
+                  "Product created locally (API unavailable).",
+                  "info"
+                );
               }
             }
 
             this.resetForm();
             this.applyFilters();
           } catch (error) {
-            this.showMessage(error.message || 'Failed to save product', 'error');
+            this.showMessage(
+              error.message || "Failed to save product",
+              "error"
+            );
           }
         },
 
@@ -453,15 +572,18 @@
           this.editingId = product._id || product.id;
           // copy product fields to form
           this.form = {
-            title: product.title || product.name || '',
+            title: product.title || product.name || "",
             price: product.price || 0,
-            description: product.description || '',
-            category: product.category || '',
-            stock: product.stock !== undefined ? product.stock : (product.availableInventory || 0),
-            image: product.image || '',
-            rating: product.rating || 0
+            description: product.description || "",
+            category: product.category || "",
+            stock:
+              product.stock !== undefined
+                ? product.stock
+                : product.availableInventory || 0,
+            image: product.image || "",
+            rating: product.rating || 0,
           };
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         },
 
         cancelEdit() {
@@ -469,71 +591,113 @@
         },
 
         resetForm() {
-          this.form = { title:'', price:0, description:'', category:'', stock:0, image:'', rating:0 };
+          this.form = {
+            title: "",
+            price: 0,
+            description: "",
+            category: "",
+            stock: 0,
+            image: "",
+            rating: 0,
+          };
           this.editMode = false;
           this.editingId = null;
         },
 
         async deleteProduct(id) {
-          if (!confirm('Are you sure you want to delete this document?')) return;
+          if (!confirm("Are you sure you want to delete this document?"))
+            return;
           try {
-            const resp = await fetch(`${this.API_BASE}/collections/${encodeURIComponent(this.collectionName)}/${id}`, { method:'DELETE' });
-            if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
-            this.showMessage('Document deleted successfully!', 'success');
+            const resp = await fetch(
+              `${this.API_BASE}/collections/${encodeURIComponent(
+                this.collectionName
+              )}/${id}`,
+              { method: "DELETE" }
+            );
+            if (!resp.ok)
+              throw new Error(`${resp.status} ${resp.statusText}`);
+            this.showMessage("Document deleted successfully!", "success");
             // remove locally too
-            this.allProducts = this.allProducts.filter(p => (p._id || p.id) !== id);
+            this.allProducts = this.allProducts.filter(
+              (p) => (p._id || p.id) !== id
+            );
             this.applyFilters();
           } catch (err) {
             // fallback: delete locally
-            this.allProducts = this.allProducts.filter(p => (p._id || p.id) !== id);
+            this.allProducts = this.allProducts.filter(
+              (p) => (p._id || p.id) !== id
+            );
             this.applyFilters();
-            this.showMessage('Document deleted locally (API unavailable).', 'info');
+            this.showMessage(
+              "Document deleted locally (API unavailable).",
+              "info"
+            );
           }
         },
 
         showMessage(text, type) {
           this.message = text;
           this.messageType = type;
-          setTimeout(() => { this.clearMessage(); }, 4000);
+          setTimeout(() => {
+            this.clearMessage();
+          }, 4000);
         },
-        clearMessage() { this.message = ''; this.messageType = ''; },
+        clearMessage() {
+          this.message = "";
+          this.messageType = "";
+        },
 
         /* -------------------------
-          Cart & checkout methods (from index.html)
-        ------------------------- */
+        Cart & checkout methods (from index.html)
+      ------------------------- */
         addToCart(product) {
           const pid = product._id || product.id;
-          const existing = this.cart.find(c => c.id === pid);
+          const existing = this.cart.find((c) => c.id === pid);
           if (existing) {
             existing.quantity = (existing.quantity || 0) + 1;
           } else {
             this.cart.push({
               id: pid,
-              title: product.title || product.name || 'Untitled',
+              title: product.title || product.name || "Untitled",
               price: product.price || 0,
-              image: product.image || '',
-              quantity: 1
+              image: product.image || "",
+              quantity: 1,
             });
           }
           // ensure reactive update of displayProducts inventory info
           this.applyFilters();
         },
         cartCount(id) {
-          const item = this.cart.find(c => c.id === id);
+          const item = this.cart.find((c) => c.id === id);
           return item ? item.quantity : 0;
         },
         canAddToCart(product) {
           // check product.stock if present, else product.availableInventory, else unlimited
-          const stock = Number(product.stock !== undefined ? product.stock : (product.availableInventory !== undefined ? product.availableInventory : Infinity));
+          const stock = Number(
+            product.stock !== undefined
+              ? product.stock
+              : product.availableInventory !== undefined
+                ? product.availableInventory
+                : Infinity
+          );
           return stock > this.cartCount(product._id || product.id);
         },
         itemsLeft(product) {
-          const stock = Number(product.stock !== undefined ? product.stock : (product.availableInventory !== undefined ? product.availableInventory : Infinity));
-          return Math.max(0, stock - this.cartCount(product._id || product.id));
+          const stock = Number(
+            product.stock !== undefined
+              ? product.stock
+              : product.availableInventory !== undefined
+                ? product.availableInventory
+                : Infinity
+          );
+          return Math.max(
+            0,
+            stock - this.cartCount(product._id || product.id)
+          );
         },
         toggleView() {
           this.showProduct = !this.showProduct;
-          window.scrollTo(0,0);
+          window.scrollTo(0, 0);
         },
 
         submitForm() {
@@ -544,14 +708,23 @@
           // clear cart and close modal
           this.cart = [];
           this.showModal = false;
-          alert('Thank you for your order!');
+          alert("Thank you for your order!");
           // reset form
-          this.order = { firstName:'', lastName:'', address:'', city:'', state:'', method:'Home', gift:'Do not send as Gift' };
+          this.order = {
+            firstName: "",
+            lastName: "",
+            address: "",
+            city: "",
+            state: "",
+            method: "Home",
+            gift: "Do not send as Gift",
+          };
           // go back to products
           this.showProduct = true;
-        }
-      }
+        },
+      },
     });
   </script>
-  </body>
+</body>
+
 </html>
