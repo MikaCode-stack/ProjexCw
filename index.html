@@ -32,24 +32,80 @@
         <div style="font-size: 14px; color: #333; font-weight: bold;">
           Items in cart: <strong>{{ cartItemCount }}</strong>
         </div>
-        <button class="checkout-btn" @click="toggleView">
+        <button class="checkout-btn" @click="toggleCheckout">
           <svg class="icon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
             stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <circle cx="9" cy="21" r="1"></circle>
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
-          {{ showProduct ? 'Checkout (' + cartItemCount + ')' : 'Back to Products' }}
+          {{ view === 'checkout' ? 'Back to Products' : 'Checkout (' + cartItemCount + ')'  }}
         </button>
+        <button class="admin-btn" @click="toggleAdmin"> {{ view === 'admin' ? 'Back to Products' : 'Admin' }}</button>
       </div>
 
     </header>
 
+    <!-- Product add/edit form -->
+    <div v-if="view ==='admin'">
+      <div class="product-form">
+        <h2>{{ editMode ? 'Edit Document' : 'Add New Document' }}</h2>
+        <form @submit.prevent="submitProduct">
+          <input v-model="form.title" type="text" placeholder="Title" required />
+          <input v-model.number="form.price" type="number" step="0.01" placeholder="Price" required />
+          <textarea v-model="form.description" placeholder="Description" required></textarea>
+          <input v-model.number="form.stock" type="number" placeholder="Stock" />
+          <input v-model="form.image" type="text" placeholder="Image URL" />
+          <input v-model.number="form.rating" type="number" min="0" max="5" placeholder="Rating (0–5)" />
+
+          <div class="form-actions" style="margin-top: 8px">
+            <button type="submit">
+              {{ editMode ? 'Update' : 'Create' }}
+            </button>
+            <button type="button" @click="cancelEdit" v-if="editMode">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- Products grid (displayProducts) -->
+      <div class="products-grid" style="margin-top: 12px">
+        <div v-for="product in displayProducts" :key="product._id || product.id" class="product-card">
+          <h3 v-html="highlightMatch(product.title || product.name || 'Unnamed')"></h3>
+          <img v-if="product.image" :src="product.image" :alt="product.title"
+            style="width: 100%; border-radius: 10px; max-height: 50%" />
+          <p v-if="product.price" class="price">
+            $ {{ (product.price || 0).toFixed(2) }}
+          </p>
+          <p v-if="product.description" v-html="highlightMatch(product.description)"></p>
+          <p v-if="product.category" class="category" style="font-size: 12px; color: #666"
+            v-html="highlightMatch(product.category)"></p>
+          <p v-if="product.stock !== undefined" class="stock" style="font-size: 12px; color: #666">
+            Stock: {{ product.stock }}
+          </p>
+
+          <div v-if="product.rating !== undefined && product.rating !== null" style="margin-top: 6px">
+            <span v-for="n in 5" :key="n" class="fa-star"
+              :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"></span>
+            <span style="font-size: 12px; color: #555">({{ product.rating }}/5)</span>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 10px">
+            <button class="btn-edit" @click="editProduct(product)">
+              Edit
+            </button>
+            <button class="btn-delete" @click="deleteProduct(product._id || product.id)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <!-- PRODUCT & MANAGEMENT SECTION-->
-    <div v-if="showProduct">
-      <h2 style="margin-bottom: 10px">Collection Manager (Products)</h2>
+    <div v-if="view === 'products'">
+      <h2 style="margin-bottom: 10px">Welcome to our courses Catalogue</h2>
 
       <div v-if="message" :class="messageType" style="margin-bottom: 10px; padding: 8px; border-radius: 6px">
         {{ message }}
@@ -102,29 +158,6 @@
             | Sorted by: {{ sortField }} ({{ sortOrder }})</span>
         </div>
       </div>
-
-      <!-- Product add/edit form -->
-      <div class="product-form">
-        <h2>{{ editMode ? 'Edit Document' : 'Add New Document' }}</h2>
-        <form @submit.prevent="submitProduct">
-          <input v-model="form.title" type="text" placeholder="Title" required />
-          <input v-model.number="form.price" type="number" step="0.01" placeholder="Price" required />
-          <textarea v-model="form.description" placeholder="Description" required></textarea>
-          <input v-model.number="form.stock" type="number" placeholder="Stock" />
-          <input v-model="form.image" type="text" placeholder="Image URL" />
-          <input v-model.number="form.rating" type="number" min="0" max="5" placeholder="Rating (0–5)" />
-
-          <div class="form-actions" style="margin-top: 8px">
-            <button type="submit">
-              {{ editMode ? 'Update' : 'Create' }}
-            </button>
-            <button type="button" @click="cancelEdit" v-if="editMode">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-
       <!-- Loading -->
       <div v-if="loading" class="loading">Loading...</div>
 
@@ -151,13 +184,7 @@
           </div>
 
           <div style="display: flex; gap: 8px; margin-top: 10px">
-            <button class="btn-edit" @click="editProduct(product)">
-              Edit
-            </button>
-            <button class="btn-delete" @click="deleteProduct(product._id || product.id)">
-              Delete
-            </button>
-            <!-- Add to cart button (cart logic from index.html) -->
+            <!-- Add to cart button -->
             <button :disabled="!canAddToCart(product)" style="
                   margin-left: auto;
                   padding: 8px;
@@ -187,7 +214,7 @@
     </div>
 
     <!-- CHECKOUT Page -->
-    <div v-else class="checkoutPage">
+    <div v-if="view === 'checkout'" class="checkoutPage">
       <h2>Checkout</h2>
 
       <p>
@@ -245,7 +272,7 @@
 
       <div style="display: flex; gap: 8px; margin-top: 8px">
         <button @click="submitForm">Submit Order</button>
-        <button @click="toggleView">Back to Products</button>
+        <button @click="toggleProducts">Back to Products</button>
       </div>
 
       <div v-if="showModal" class="modal">
@@ -268,6 +295,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <script>
@@ -277,13 +305,13 @@
       data() {
         return {
           // UI
-          showProduct: true,
+          view: 'products',
           message: "",
           messageType: "",
           loading: false,
 
           // API
-          API_BASE: "http://localhost:3000", // change if you have API
+          API_BASE: "http://localhost:5000", // change if you have API
           collectionName: "products",
 
           // Products (all products + filtered)
@@ -376,6 +404,23 @@
         },
       },
       methods: {
+
+        toggleProducts(){
+          this.view = 'products';
+          window.scrollTo(0,0);
+          applyFilters();
+        },
+
+        toggleAdmin() {
+          this.view = this.view === 'admin' ? 'products' : 'admin';
+          window.scrollTo(0,0);
+          if(this.view === 'admin' && !this.editMode) this.resetForm();
+        },
+
+        toggleCheckout(){
+          this.view = this.view === 'checkout' ? 'products' : 'checkout';
+          window.scrollTo(0,0);
+        },
         /* -------------------------
         Products collection methods
       ------------------------- */
@@ -513,6 +558,7 @@
                     body: JSON.stringify(payload),
                   }
                 );
+                const updateDoc = await payload.json();
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 this.showMessage("Product updated successfully!", "success");
               } catch (err) {
@@ -587,6 +633,7 @@
 
         cancelEdit() {
           this.resetForm();
+          
         },
 
         resetForm() {
@@ -694,10 +741,10 @@
             stock - this.cartCount(product._id || product.id)
           );
         },
-        toggleView() {
+        /*toggleView() {
           this.showProduct = !this.showProduct;
           window.scrollTo(0, 0);
-        },
+        },*/
 
         submitForm() {
           // simply show modal (same as index.html)
@@ -719,7 +766,7 @@
             gift: "Do not send as Gift",
           };
           // go back to products
-          this.showProduct = true;
+          this.view = products;
         },
       },
     });
