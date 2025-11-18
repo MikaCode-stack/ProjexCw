@@ -56,6 +56,17 @@ button {
   font-weight: bold;
 }
 
+.disabled-btn {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #9ca3af;
+}
+
+.disabled-btn:hover {
+  background-color: #9ca3af;
+  transform: none;
+}
+
 button:hover {
   background-color: #68ff03;
 }
@@ -155,8 +166,105 @@ header h2 {
   color: #444;
 }
 
+/*Login form style*/
+/* Login Modal Styles */
+.login-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  margin: 50px auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
 
+.login-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
 
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.login-message {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.login-message.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.login-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-actions button[type="submit"] {
+  background: #2563eb;
+  color: white;
+}
+
+.form-actions button[type="submit"]:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.form-actions button[type="button"] {
+  background: #6b7280;
+  color: white;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
 /* Product Form (for adding a new product)*/
 .product-form form{
   background: #93B1B5;
