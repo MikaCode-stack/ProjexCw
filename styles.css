@@ -7,7 +7,9 @@ body {
   padding: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-align: center;
   color: #444;
   font-weight: 800;
@@ -25,11 +27,13 @@ h1, h2, h3 {
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 0px; /* Space between logo and text */
+  gap: 0px;
+  /* Space between logo and text */
 }
 
 .logo {
-  height: 50px;  /* Adjust depending on header height */
+  height: 50px;
+  /* Adjust depending on header height */
   width: auto;
 }
 
@@ -40,7 +44,6 @@ h1, h2, h3 {
   margin: 0;
 }
 
-/* From Uiverse.io by CodeGame2010 */ 
 button {
   display: flex;
   align-items: center;
@@ -51,24 +54,13 @@ button {
   border: 0;
   outline: 0;
   font-size: 18px;
-  background: #08f;
+  background: #3cb371;
   color: #fff;
   font-weight: bold;
 }
 
-.disabled-btn {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #9ca3af;
-}
-
-.disabled-btn:hover {
-  background-color: #9ca3af;
-  transform: none;
-}
-
 button:hover {
-  background-color: #68ff03;
+  background-color: #35a167;
 }
 
 button:hover svg {
@@ -85,21 +77,17 @@ button:active {
   transition: 200ms;
 }
 
-button:not(:active) {
-  transition: 200ms;
-}
-
-.top-actions{
+.top-actions {
   display: flex;
-    align-content: stretch;
-    justify-content: space-evenly;
-    align-items: flex-end;
-    gap: 10px;
+  align-content: stretch;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 input,
 textarea {
-   width: 100%;
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -115,10 +103,10 @@ textarea {
 }
 
 .controls {
-  background-color: #93B1B5;
+  background-color: #93b1b5;
   padding: 15px 25px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   margin-bottom: 25px;
 }
 
@@ -137,26 +125,226 @@ textarea {
   padding: 10px 20px;
   border-radius: 25px;
   font-weight: bold;
-  background-color: #4F7C82;
+  background-color: #4f7c82;
   color: #fff;
   border: none;
   cursor: pointer;
   transition: background 0.3s;
 }
+
 #checkoutSection .checkout-btn:hover {
   background-color: #0b2e33;
 }
 
+/*Successful order*/
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Popup container */
+.success-popup {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.notifications-container {
+  width: 100%;
+}
+
+.success {
+  border-radius: 8px;
+  background-color: #f0fdf4;
+  padding: 1rem;
+  border: 1px solid #86efac;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.succes-svg {
+  color: #22c55e;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.success-prompt-wrap {
+  flex: 1;
+}
+
+.success-prompt-heading {
+  font-weight: 600;
+  color: #166534;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.success-prompt-prompt {
+  color: #15803d;
+  margin-bottom: 1rem;
+}
+
+.success-prompt-prompt p {
+  margin: 0;
+}
+
+.success-button-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.success-button-secondary {
+  background-color: white;
+  color: #166534;
+  border: 1px solid #86efac;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.success-button-secondary:hover {
+  background-color: #f0fdf4;
+}
+
+/* General message container */
+.message {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Success messages */
+.message-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-success::before {
+  content: "✓";
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Error messages */
+.message-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.message-error::before {
+  content: "✕";
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Info messages */
+.message-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.message-info::before {
+  content: "ℹ";
+  background: #17a2b8;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Slide down animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* ---------- Header ---------- */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  background-color: #93B1B5;
+  background-color: #93b1b5;
   padding: 15px 25px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   margin-bottom: 25px;
 }
 
@@ -164,24 +352,6 @@ header h2 {
   margin: 0;
   font-weight: 600;
   color: #444;
-}
-
-/*Login form style*/
-/* Login Modal Styles */
-.login-content {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  margin: 50px auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.login-content h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
 }
 
 .form-group {
@@ -209,80 +379,6 @@ header h2 {
   border-color: #2563eb;
 }
 
-.login-message {
-  padding: 10px;
-  border-radius: 5px;
-  margin: 15px 0;
-  text-align: center;
-}
-
-.login-message.success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
-.login-message.error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.form-actions button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.form-actions button[type="submit"] {
-  background: #2563eb;
-  color: white;
-}
-
-.form-actions button[type="submit"]:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-}
-
-.form-actions button[type="button"] {
-  background: #6b7280;
-  color: white;
-}
-
-.logout-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
-/* Product Form (for adding a new product)*/
-.product-form form{
-  background: #93B1B5;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
-  display: grid;
-  gap: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-}
-
-
 input:focus,
 textarea:focus,
 select:focus {
@@ -290,22 +386,7 @@ select:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
-.product-form button {
-  border-radius: 9999px;
-  padding: 10px 20px;
-  font-weight: 600;
-  background-color: #4F7C82;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  margin-top: 8px;
-  font-size: 15px;
-  transition: background-color 0.3s;
-}
 
-.product-form button:hover {
-  background-color: #0b2e33;
-}
 /* Products Grid */
 .products-grid {
   display: grid;
@@ -318,14 +399,13 @@ select:focus {
   height: 200px;
   object-fit: cover;
   border-radius: 10px;
-
 }
 
 .product-card {
-  background: #93B1B5;
+  background: #93b1b5;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 600px;
 }
 
@@ -333,16 +413,18 @@ select:focus {
   margin-bottom: 10px;
   color: #333;
 }
+
 .price {
   color: #444;
   font-weight: bold;
 }
+
 /* ---------- product-card Buttons ---------- */
 .product-card button {
   border-radius: 9999px;
   padding: 10px 20px;
   font-weight: 600;
-  background-color: #4F7C82;
+  background-color: #4f7c82;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -360,7 +442,6 @@ select:focus {
   cursor: not-allowed;
 }
 
-/* ---------- Stock messages ---------- */
 .stock-status {
   display: block;
   margin-top: 8px;
@@ -368,16 +449,74 @@ select:focus {
 }
 
 /* ---------- Checkout Form ---------- */
+/* Google Forms Style CSS */
+.checkoutPage .form-group {
+  margin-bottom: 20px;
+}
+
+.checkoutPage label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+.checkoutPage label.required::after {
+  content: " *";
+  color: #d93025;
+}
+
+.checkoutPage input,
+.checkoutPage select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.checkoutPage input:focus,
+.checkoutPage select:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+  outline: none;
+}
+
+.checkoutPage input.error {
+  border-color: #d93025;
+}
+
+.checkoutPage input::placeholder {
+  color: #5f6368;
+  font-size: 14px;
+}
+
+/* Button styling for disabled state */
+.checkoutPage button:disabled {
+  background-color: #f1f3f4;
+  color: #9aa0a6;
+  cursor: not-allowed;
+  border: 1px solid #dadce0;
+}
+
+.checkoutPage button:disabled:hover {
+  background-color: #f1f3f4;
+  transform: none;
+}
+
 .checkoutPage input:not([type="radio"]):not([type="checkbox"]),
 .checkoutPage select {
   width: 50%;
   padding: 10px 18px;
   border: 1.5px solid #ddd;
-  border-radius: 9999px; /* oval look */
+  border-radius: 9999px;
+  /* oval look */
   background-color: #f9f9f9;
   font-size: 1rem;
   outline: none;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.25s ease;
 }
 
@@ -385,7 +524,7 @@ select:focus {
 .checkoutPage select:focus {
   border-color: #ff9f43;
   background-color: #fff;
-  box-shadow: 0 0 0 4px rgba(255,159,67,0.15);
+  box-shadow: 0 0 0 4px rgba(255, 159, 67, 0.15);
 }
 
 /* ---------- Checkout Buttons ---------- */
@@ -393,7 +532,7 @@ select:focus {
   border-radius: 9999px;
   padding: 10px 20px;
   font-weight: 600;
-  background-color: #4F7C82;
+  background-color: #4f7c82;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -426,49 +565,125 @@ label {
   font-style: italic;
 }
 
+/* --- MODAL OVERLAY --- */
+/* Overlay */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 9999;
+  padding: 24px;
 }
 
-.submit-content {
+/* Modal box */
+.modal-content {
+  width: 100%;
+  max-width: 860px; /* roomy for list of cart items */
+  max-height: calc(100vh - 64px);
+  overflow: auto;
   background: #fff;
   border-radius: 12px;
-  padding: 20px 30px;
-  width: 400px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  animation: popIn 0.18s ease-out;
+}
+
+/* Header */
+.modal-content h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Body */
+.modal-body {
+  font-size: 0.98rem;
+  color: #222;
+}
+
+/* Empty cart box */
+.empty-cart {
+  border-radius: 8px;
+  background: #fbfbfb;
+  padding: 18px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.submit-content h2 {
-  color: #333;
-  margin-bottom: 10px;
+/* Cart item card */
+.cart-item {
+  border: 1px solid #eee;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
 }
 
-.submit-content ul {
-  list-style: none;
-  padding: 0;
-  text-align: left;
-  margin: 15px 0;
+/* Left column content */
+.cart-item h4 {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+}
+.cart-item p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #444;
 }
 
-.submit-content button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
+/* Controls column */
+.cart-item > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
 }
 
-.submit-content button:hover {
-  background-color: #0056b3;
+/* Quantity input */
+.cart-item input[type="number"] {
+  width: 84px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  font-size: 0.95rem;
+}
+
+/* Footer section (if you add one inside modal) */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  gap: 8px;
+}
+
+/* Small responsive adjustments */
+@media (max-width: 540px) {
+  .modal-content {
+    padding: 14px;
+    max-width: 100%;
+  }
+  .cart-item {
+    grid-template-columns: 1fr;
+  }
+  .cart-item > div:last-child {
+    align-items: flex-start;
+  }
+}
+
+/* animation */
+@keyframes popIn {
+  from {
+    transform: translateY(8px) scale(0.995);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }

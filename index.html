@@ -36,7 +36,7 @@
     <link rel="manifest" href="images/site.webmanifest" />
   </head>
 
-  <body>
+   <body>
     <div id="app">
       <header class="site-header">
         <div style="display: flex; align-items: center">
@@ -50,12 +50,9 @@
             <div class="site-title">MindForge</div>
           </div>
         </div>
-        <!--Navigation between main(product page), admin page(CRUD) and Checkout Section-->
+        <!--Navigation between main(product page) and Checkout Section-->
         <div class="top-actions">
           <div class="checkoutInfo">
-            <div style="font-size: 14px; color: #333; font-weight: bold">
-              Items in cart: <strong>{{ cartItemCount }}</strong>
-            </div>
             <button
               class="checkout-btn"
               @click="toggleCheckout"
@@ -84,183 +81,16 @@
               cartItemCount + ')' }}
             </button>
           </div>
-          <button class="admin-btn" @click="toggleAdmin">
-            {{ isAuthenticated ? (view === 'admin' ? 'Back to Products' :
-            'Admin') : 'Admin Login' }}
-          </button>
         </div>
       </header>
 
-      <!-- Login Modal -->
-      <div v-if="showLoginModal" class="modal">
-        <div class="login-content">
-          <h2>Admin Login</h2>
-          <form @submit.prevent="handleLogin">
-            <div class="form-group">
-              <label>Email:</label>
-              <input
-                v-model="loginForm.email"
-                type="email"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label>Password:</label>
-              <input
-                v-model="loginForm.password"
-                type="password"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-            <div
-              v-if="loginMessage"
-              :class="loginMessageType"
-              class="login-message"
-            >
-              {{ loginMessage }}
-            </div>
-            <div class="form-actions">
-              <button type="submit" :disabled="loggingIn">
-                {{ loggingIn ? 'Logging in...' : 'Login' }}
-              </button>
-              <button type="button" @click="closeLoginModal">Cancel</button>
-            </div>
-          </form>
-        </div>
+      <div v-if="message" :class="['message', 'message-' + messageType]">
+        {{ message }}
       </div>
 
-      <!-- Product add/edit form -->
-      <div v-if="view ==='admin' && isAuthenticated">
-        <div class="product-form">
-          <h2>{{ editMode ? 'Edit Document' : 'Add New Document' }}</h2>
-          <form @submit.prevent="submitProduct">
-            <input
-              v-model="productForm.title"
-              type="text"
-              placeholder="Title"
-              required
-            />
-            <input
-              v-model.number="productForm.price"
-              type="number"
-              step="0.01"
-              placeholder="Price"
-              required
-            />
-            <textarea
-              v-model="productForm.description"
-              placeholder="Description"
-              required
-            ></textarea>
-            <input
-              v-model.number="productForm.stock"
-              type="number"
-              placeholder="Stock"
-            />
-            <input
-              v-model="productForm.image"
-              type="text"
-              placeholder="Image URL"
-            />
-            <input
-              v-model.number="productForm.rating"
-              type="number"
-              min="0"
-              max="5"
-              placeholder="Rating (0–5)"
-            />
-
-            <div class="form-actions" style="margin-top: 8px">
-              <button type="submit">
-                {{ editMode ? 'Update' : 'Create' }}
-              </button>
-              <button type="button" @click="cancelEdit" v-if="editMode">
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-        <!-- Products grid (displayProducts) -->
-        <div class="products-grid" style="margin-top: 12px">
-          <div
-            v-for="product in displayProducts"
-            :key="product._id || product.id"
-            class="product-card"
-          >
-            <h3
-              v-html="highlightMatch(product.title || product.name || 'Unnamed')"
-            ></h3>
-            <img
-              v-if="product.image"
-              :src="product.image"
-              :alt="product.title"
-              style="width: 100%; border-radius: 10px; max-height: 50%"
-            />
-            <p v-if="product.price" class="price">
-              $ {{ (product.price || 0).toFixed(2) }}
-            </p>
-            <p
-              v-if="product.description"
-              v-html="highlightMatch(product.description)"
-            ></p>
-            <p
-              v-if="product.category"
-              class="category"
-              style="font-size: 12px; color: #666"
-              v-html="highlightMatch(product.category)"
-            ></p>
-            <p
-              v-if="product.stock !== undefined"
-              class="stock"
-              style="font-size: 12px; color: #666"
-            >
-              Stock: {{ product.stock }}
-            </p>
-
-            <div
-              v-if="product.rating !== undefined && product.rating !== null"
-              style="margin-top: 6px"
-            >
-              <span
-                v-for="n in 5"
-                :key="n"
-                class="fa-star"
-                :class="n <= product.rating ? 'fa-solid' : 'fa-regular'"
-              ></span>
-              <span style="font-size: 12px; color: #555"
-                >({{ product.rating }}/5)</span
-              >
-            </div>
-
-            <div style="display: flex; gap: 8px; margin-top: 10px">
-              <button class="btn-edit" @click="editProduct(product)">
-                Edit
-              </button>
-              <button
-                class="btn-delete"
-                @click="deleteProduct(product._id || product.id)"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PRODUCT & MANAGEMENT SECTION-->
+      <!-- PRODUCT PAGE(Lessons catalogue)-->
       <div v-if="view === 'products'">
-        <h2 style="margin-bottom: 10px">Welcome to our courses Catalogue</h2>
-
-        <div
-          v-if="message"
-          :class="messageType"
-          style="margin-bottom: 10px; padding: 8px; border-radius: 6px"
-        >
-          {{ message }}
-        </div>
-
+        <h2 style="margin-bottom: 10px">Welcome to our lessons Catalogue</h2>
         <!-- Controls: search / sort / max -->
         <div class="controls">
           <h3>Search & Sort</h3>
@@ -268,7 +98,7 @@
             <input
               v-model="searchQuery"
               @input="performSearch"
-              placeholder="🔍 Search by Title"
+              placeholder="🔍 Search by Subject"
             />
           </div>
 
@@ -279,10 +109,10 @@
               <label>Sort By:</label>
               <select v-model="sortField" @change="applyFilters">
                 <option value="">None</option>
-                <option value="title">Title</option>
+                <option value="Subject">Subject</option>
                 <option value="price">Price</option>
                 <option value="category">Category</option>
-                <option value="stock">Stock</option>
+                <option value="spaces">spaces</option>
               </select>
             </div>
 
@@ -321,7 +151,6 @@
             >
           </div>
         </div>
-        <!-- Loading -->
         <div v-if="loading" class="loading">Loading...</div>
 
         <!-- Products grid (displayProducts) -->
@@ -332,12 +161,12 @@
             class="product-card"
           >
             <h3
-              v-html="highlightMatch(product.title || product.name || 'Unnamed')"
+              v-html="highlightMatch(product.Subject || product.name || 'Unnamed')"
             ></h3>
             <img
               v-if="product.image"
               :src="product.image"
-              :alt="product.title"
+              :alt="product.Subject"
               style="width: 100%; border-radius: 10px; max-height: 50%"
             />
             <p v-if="product.price" class="price">
@@ -354,11 +183,11 @@
               v-html="highlightMatch(product.category)"
             ></p>
             <p
-              v-if="product.stock !== undefined"
-              class="stock"
+              v-if="product.spaces !== undefined"
+              class="spaces"
               style="font-size: 12px; color: #666"
             >
-              Stock: {{ itemsLeft(product) }}
+              spaces: {{ itemsLeft(product) }}
             </p>
 
             <div
@@ -398,7 +227,7 @@
           </div>
         </div>
         <div v-if="!loading && allProducts.length === 0" class="empty-state">
-          No classes were found, try another Title.
+          No classes were found, try another Subject.
         </div>
       </div>
 
@@ -406,57 +235,64 @@
       <div v-if="view === 'checkout'" class="checkoutPage">
         <h2>Checkout</h2>
 
-        <p>
-          <strong>First Name:</strong
-          ><input
+        <!-- Required Fields with Asterisks and Placeholders -->
+        <div class="form-group">
+          <label class="required">First Name</label>
+          <input
             v-model.trim="order.firstName"
-            placeholder="Your First Name"
+            placeholder="First Name *"
+            :class="{ 'error': fieldErrors.firstName }"
+            @blur="validateField('firstName')"
           />
-        </p>
-        <p>
-          <strong>Last Name:</strong
-          ><input v-model.trim="order.lastName" placeholder="Your Last Name" />
-        </p>
-        <p>
-          <strong>Address:</strong
-          ><input v-model.trim="order.address" placeholder="Your Address" />
-        </p>
-        <p>
-          <strong>City:</strong
-          ><input v-model.trim="order.city" placeholder="Your City" />
-        </p>
+          <div v-if="fieldErrors.firstName" class="error-message">
+            {{ fieldErrors.firstName }}
+          </div>
+        </div>
 
-        <p>
-          <strong>District:</strong>
+        <div class="form-group">
+          <label class="required">Last Name</label>
+          <input
+            v-model.trim="order.lastName"
+            placeholder="Last Name *"
+            :class="{ 'error': fieldErrors.lastName }"
+            @blur="validateField('lastName')"
+          />
+          <div v-if="fieldErrors.lastName" class="error-message">
+            {{ fieldErrors.lastName }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Phone Number</label>
+          <input
+            v-model.trim="order.phone"
+            placeholder="Phone Number * (Numbers only)"
+            :class="{ 'error': fieldErrors.phone }"
+            @blur="validateField('phone')"
+            @input="validateField('phone')"
+          />
+          <div v-if="fieldErrors.phone" class="error-message">
+            {{ fieldErrors.phone }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Address</label>
+          <input v-model.trim="order.address" placeholder="Address" />
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <input v-model.trim="order.city" placeholder="City" />
+        </div>
+
+        <div class="form-group">
+          <label>District</label>
           <select v-model="order.state">
             <option disabled value="">Select District</option>
             <option v-for="state in states" :key="state">{{ state }}</option>
           </select>
-        </p>
-
-        <p>
-          <input
-            type="checkbox"
-            id="gift"
-            v-model="order.gift"
-            true-value="Send as Gift"
-            false-value="Do not send as Gift"
-          />
-          <label for="gift">Ship as gift?</label>
-        </p>
-
-        <p>
-          <input type="radio" id="home" value="Home" v-model="order.method" />
-          <label for="home">Home</label>
-          <input
-            type="radio"
-            id="business"
-            value="Business"
-            v-model="order.method"
-            style="margin-left: 10px"
-          />
-          <label for="business">Business</label>
-        </p>
+        </div>
 
         <h3>Order Summary</h3>
         <p><strong>First Name:</strong> {{ order.firstName }}</p>
@@ -470,156 +306,175 @@
         <h4>Cart Items</h4>
         <ul>
           <li v-for="item in cart" :key="item.id">
-            {{ item.title || 'Item' }} : {{ item.quantity || 0 }} × ${{
+            {{ item.Subject || 'Item' }} : {{ item.quantity || 0 }} × ${{
             (item.price || 0).toFixed(2) }}
           </li>
         </ul>
 
-        <p><strong>Total:</strong> ${{ cartTotal.toFixed(2) }}</p>
-
-        <div style="display: flex; gap: 8px; margin-top: 8px">
-          <button @click="submitForm">Submit Order</button>
-          <button @click="toggleProducts">Back to Products</button>
+        <div style="margin: 15px 0">
+          <button
+            @click="showModal = true"
+            style="
+              background: #2196f3;
+              color: white;
+              padding: 8px 16px;
+              border: none;
+              border-radius: 4px;
+            "
+          >
+            📝 Edit Cart Items
+          </button>
         </div>
-
-        <!-- Order confirmation modal with Save / Edit / Confirm / Delete -->
-        <!-- Order modal: review + inline edit -->
-        <div v-if="showModal" class="modal">
-          <div class="submit-content">
-            <h2 v-if="!modalEditMode">Order Review</h2>
-            <h2 v-else>Edit Order</h2>
-
-            <!-- Customer fields (editable when in edit mode) -->
-            <div style="margin-bottom: 10px">
-              <p v-if="!modalEditMode">
-                <strong>First Name:</strong> {{ order.firstName }}
-              </p>
-              <p v-else>
-                <strong>First Name:</strong>
-                <input v-model="editableOrder.customer.firstName" />
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>Last Name:</strong> {{ order.lastName }}
-              </p>
-              <p v-else>
-                <strong>Last Name:</strong>
-                <input v-model="editableOrder.customer.lastName" />
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>Address:</strong> {{ order.address }}
-              </p>
-              <p v-else>
-                <strong>Address:</strong>
-                <input v-model="editableOrder.customer.address" />
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>City:</strong> {{ order.city }}
-              </p>
-              <p v-else>
-                <strong>City:</strong>
-                <input v-model="editableOrder.customer.city" />
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>District:</strong> {{ order.state }}
-              </p>
-              <p v-else>
-                <strong>District: </strong>
-                <input v-model="editableOrder.customer.state" />
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>Shipping Method:</strong> {{ order.method }}
-              </p>
-              <p v-else>
-                <input
-                  type="radio"
-                  id="home"
-                  value="Home"
-                  v-model="order.method"
-                />
-                <label for="home">Home</label>
-                <input
-                  type="radio"
-                  id="business"
-                  value="Business"
-                  v-model="order.method"
-                  style="margin-left: 10px"
-                />
-                <label for="business">Business</label>
-              </p>
-              <p v-if="!modalEditMode">
-                <strong>Ship as gift?</strong> {{ order.gift }}
-              </p>
-              <p v-else>
-                <input
-                  type="checkbox"
-                  id="gift"
-                  v-model="order.gift"
-                  true-value="Send as Gift"
-                  false-value="Do not send as Gift"
-                />
-                <label for="gift">Ship as gift?</label>
-              </p>
-            </div>
-
-            <!-- Buttons -->
-            <div
-              style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap"
-            >
-              <!-- Toggle edit mode -->
-              <button v-if="!modalEditMode" @click="startEditOrder">
-                Edit
-              </button>
-              <button v-if="modalEditMode" @click="cancelEditOrder">
-                Cancel Edit
-              </button>
-
-              <!-- Save edited order (PUT) -->
-              <button
-                v-if="modalEditMode"
-                @click="saveEditedOrder"
-                :disabled="saving"
-              >
-                {{ saving ? 'Saving…' : 'Save Changes' }}
-              </button>
-
-              <!-- Keep/save draft (POST if no id) -->
-              <button
-                v-if="!modalEditMode"
-                @click="saveOrder"
-                :disabled="saving"
-              >
-                {{ saving ? 'Saving…' : (lastOrderId ? 'Save' : 'Save Order') }}
-              </button>
-
-              <!-- Confirm (mark as confirmed) -->
-              <button
-                v-if="!modalEditMode"
-                @click="confirmOrder"
-                :disabled="confirming"
-              >
-                {{ confirming ? 'Confirming…' : 'Confirm & Pay' }}
-              </button>
-
-              <!-- Delete (delete saved order or clear local) -->
-              <button
-                @click="deleteOrder"
-                :disabled="deleting"
-                style="background: #ef4444; color: white"
-              >
-                {{ deleting ? 'Deleting…' : 'Delete Order' }}
-              </button>
-
-              <button @click="closeModal">Close</button>
-            </div>
-
-            <div v-if="modalMessage" style="margin-top: 10px; color: #333">
-              {{ modalMessage }}
+        <div style="display: flex; gap: 8px; margin-top: 8px">
+          <button
+            @click="submitOrder()"
+            :disabled="!isCheckoutFormValid"
+            class="submit-btn"
+          >
+            Submit Order
+          </button>
+        </div>
+        <div v-if="orderSuccess" class="success-overlay">
+          <div class="success-popup">
+            <div class="success">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg
+                    class="succes-svg"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="success-prompt-wrap">
+                  <p class="success-prompt-heading">Order completed</p>
+                  <div class="success-prompt-prompt">
+                    <p>
+                      Order Submitted successfully, thanks for shopping with us!
+                    </p>
+                  </div>
+                  <div class="success-button-container">
+                    <button
+                      @click="dismissSuccess"
+                      type="button"
+                      class="success-button-secondary"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+          
+          <!-- Edit Cart Modal (always controlled by showModal) -->
+          <div v-if="showModal" class="modal">
+            <div class="modal-content">
+              <button class="modal-close" @click="showModal=false">×</button>
+
+              <h3>Edit Your Cart</h3>
+
+              <div class="modal-body">
+                <!-- EMPTY cart message -->
+                <div
+                  v-if="!cart || cart.length === 0"
+                  class="empty-cart"
+                  style="padding: 20px; text-align: center"
+                >
+                  <p>
+                    Your cart is empty — nothing here yet.
+                  </p>
+                  <p >
+                    Browse products and add items to your cart. Upon addition, you'll be able to edit quantities here.
+                  </p>
+
+                  <div>
+                    <button
+                      type="button"
+                      @click="toggleProducts()"
+                    >
+                      Browse Products
+                    </button>
+                  </div>
+                </div>
+
+                <!-- NON-EMPTY cart listing -->
+                <div v-else>
+                  <div
+                    v-for="(product, index) in cart"
+                    :key="product.id || product._id"
+                    class="cart-item"
+                    >
+                    
+
+                    <h4>{{ product.Subject || product.name || 'No Subject' }}</h4>
+                    <p>Price: ${{ (product.price || 0).toFixed(2) }}</p>
+
+                    <div>
+                      <label>Quantity:</label>
+                      <input
+                        type="number"
+                        v-model.number="product.quantity"
+                        :min="1"
+                        :max="getMaxQuantity(product.id || product._id)"
+                      />
+
+                      <button
+                        type="button"
+                        @click="removeOneFromCart(index)"
+                        
+                      >
+                        Remove 1
+                      </button>
+
+                      <button
+                        type="button"
+                        @click="addToCart(product, 1)"
+                       >
+                        Add 1
+                      </button>
+                    </div>
+
+                    <p style="margin-top: 5px; font-weight: bold">
+                      Subtotal: ${{ ((product.price || 0) * (product.quantity ||
+                      1)).toFixed(2) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- modal footer (single Save / Close controls, shown for both empty & non-empty) -->
+              <div
+                >
+                <div>
+                  <h4 style="margin: 0">
+                    Cart Total: ${{ cartTotal.toFixed(2) }}
+                  </h4>
+                </div>
+
+                <div style="display: flex; gap: 10px">
+                  <!-- Save is disabled when there are no items -->
+                  <button
+                    type="button"
+                    @click="closeModal()"
+                    :disabled="!cart || cart.length === 0"
+                    >
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
-
     <!--Script for Vue.js app-->
     <script>
       new Vue({
@@ -630,62 +485,52 @@
             view: "products",
             message: "",
             messageType: "",
+            messageTimer: null,
             loading: false,
+            fieldErrors: { firstName: "", lastName: "", phone: "" },
 
-            //Admin login
-            isAuthenticated: false,
-            showLoginModal: false,
-            loggingIn: false,
-            loginForm: {
-              email: "",
-              password: "",
-            },
-            loginMessage: "",
-            loginMessageType: "",
-
-            //orders
-            lastOrderId: null,
-            modalEditMode: false,
-            editableOrder: { customer: {}, items: [], total: 0 },
+            // orders
+            cart: [],
             saving: false,
-            confirming: false,
+            submittingOrder: false,
             deleting: false,
             modalMessage: "",
+            orderSuccess: false,
+
             // API
             API_BASE: "https://project-cw-backend-apirest.onrender.com",
-            collectionName: "products",
+            collectionName: "lessons",
 
-            // Products (all products + filtered)
+            // Products
             allProducts: [],
             displayProducts: [],
 
-            // form to add a new product or edit an existing product
+            // product form
             productForm: {
-              title: "",
+              Subject: "",
               price: null,
               description: "",
               category: "",
-              stock: null,
+              spaces: null,
               image: "",
               rating: null,
             },
             editMode: false,
             editingId: null,
 
-            // search & sort & limits
+            // search & sort
             searchQuery: "",
             sortField: "",
             sortOrder: "asc",
             maxResults: 10,
 
-            // Cart & checkout
-            cart: [],
             sortKey: "price",
             sortAscending: true,
             productsToShow: 6,
             order: {
               firstName: "",
               lastName: "",
+              phone: "",
               address: "",
               city: "",
               state: "",
@@ -697,7 +542,6 @@
           };
         },
         created() {
-          // try fetch from API; if fails, fallback to sampleProducts
           this.fetchCollection();
         },
         computed: {
@@ -710,26 +554,37 @@
               0
             );
           },
+          // expose checkout validity as computed so template can bind :disabled="!isCheckoutFormValid"
+          isCheckoutFormValid() {
+            return this.validateCheckout();
+          },
         },
+
         methods: {
-          toggleProducts() {
-            //Showing Products page
-            this.view = "products";
-            window.scrollTo(0, 0);
-            this.applyFilters();
+          openEditModal() {
+            this.showModal = true;
+            this.selectedProduct = null; // no product selected yet
           },
 
-          toggleAdmin() {
-            //Showing admin(CRUD) page
-            if (this.isAuthenticated) {
-              // If already authenticated, toggle admin view
-              this.view = this.view === "admin" ? "products" : "admin";
-              window.scrollTo(0, 0);
-              if (this.view === "admin" && !this.editMode) this.resetForm();
-            } else {
-              // If not authenticated, show login modal
-              this.showLoginModal = true;
-            }
+          getMaxQuantity(productId) {
+            const product = this.allProducts.find(
+              (p) => (p._id || p.id) === productId
+            );
+            return product ? this.itemsLeft(product) : 1;
+          },
+
+          toggleProducts() {
+            this.view = "products";
+            window.scrollTo(0, 0);
+            this.fetchCollection();
+          },
+
+          validateCheckout() {
+            return (
+              !!this.order.firstName &&
+              !!this.order.lastName &&
+              /^\d{7,15}$/.test(String(this.order.phone || ""))
+            );
           },
 
           toggleCheckout() {
@@ -740,30 +595,18 @@
               );
               return;
             }
-            //Showing Checkout section
             this.view = this.view === "checkout" ? "products" : "checkout";
             window.scrollTo(0, 0);
           },
-          /* -------------------------
-        Products collection methods
-      ------------------------- */
-          async fetchCollection() {
-            if (!this.collectionName) {
-              this.showMessage("Enter collection name.", "error");
-              return;
-            }
 
+        //Simple methods which returns the lessons collection
+          async fetchLessons() {
             this.loading = true;
             this.allProducts = [];
             this.displayProducts = [];
-            this.clearMessage();
-
-            // attempt API fetch; if that fails (CORS / not running), fallback to sampleProducts
             try {
               const resp = await fetch(
-                `${this.API_BASE}/collections/${encodeURIComponent(
-                  this.collectionName
-                )}`
+                `${this.API_BASE}/lessons`
               );
               if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
               const data = await resp.json();
@@ -780,25 +623,13 @@
             }
           },
 
+          //Performing search. Query fetched in front-end, but search logic done in baackend. Afterwards, results are displayed in front-end.
+          //Dynamic Searching through Subject  
           async performSearch() {
             if (this.searchQuery.trim() === "") {
-              try {
-                const resp = await fetch(
-                  `${this.API_BASE}/collections/products`
-                );
-                if (!resp.ok) throw new Error(`Server ${resp.status}`);
-                const res = await resp.json();
-                this.allProducts = Array.isArray(res) ? res : [];
-                this.applyFilters();
-              } catch (err) {
-                console.error("Failed to fetch products:", err);
-                this.allProducts = [];
-                this.applyFilters();
-                this.showMessage("Failed to load products", err);
-              }
-              return;
+              console.log("performSearch: empty query -> fetching collection");
+              return this.fetchCollection();
             }
-            //normal search flow(box is not clear)
             try {
               const url = `${this.API_BASE}/search?query=${encodeURIComponent(
                 this.searchQuery.trim()
@@ -813,8 +644,6 @@
                 );
               }
               const data = await response.json();
-
-              //Updating source array from applyFilters
               this.allProducts = Array.isArray(data) ? data : [data];
               this.applyFilters();
             } catch (error) {
@@ -824,10 +653,9 @@
             }
           },
 
+          //sorting Logic. Completely handled in front-end
           applyFilters() {
             let results = [...this.allProducts];
-
-            // sort
             if (this.sortField) {
               results.sort((a, b) => {
                 let aVal = a[this.sortField];
@@ -843,14 +671,12 @@
                 }
               });
             }
-
-            // limit
             results = results.slice(0, this.maxResults || 10);
             this.displayProducts = results;
           },
 
+          //clear all filters after click on reset button
           async resetFilters() {
-            // reset controls and restore originalProducts
             this.searchQuery = "";
             this.sortField = "";
             this.sortOrder = "asc";
@@ -860,240 +686,31 @@
 
           highlightMatch(text) {
             if (!this.searchQuery || !text) return text;
-            const q = this.searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
+            const q = this.searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
             const regex = new RegExp("(" + q + ")", "gi");
             return text
               .toString()
               .replace(regex, '<span class="highlight">$1</span>');
           },
 
-          //Login for admin
-          // Login methods
-          async handleLogin() {
-            this.loggingIn = true;
-            this.loginMessage = "";
-
-            try {
-              // login endpoint
-              const response = await fetch(`${this.API_BASE}/login`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  email: this.loginForm.email,
-                  password: this.loginForm.password,
-                }),
-              });
-
-              const result = await response.json();
-
-              if (result.success) {
-                // Successful login
-                this.isAuthenticated = true;
-                this.loginMessage = result.message || "Login successful!";
-                this.loginMessageType = "success";
-
-                // Store user info if needed
-                if (result.user) {
-                  localStorage.setItem(
-                    "currentUser",
-                    JSON.stringify(result.user)
-                  );
-                }
-
-                // Close login modal and show admin section after a brief delay
-                setTimeout(() => {
-                  this.showLoginModal = false;
-                  this.view = "admin";
-                  this.resetLoginForm();
-                  window.scrollTo(0, 0);
-                }, 1000);
-              } else {
-                // Failed login
-                this.loginMessage =
-                  result.message || "Invalid email or password";
-                this.loginMessageType = "error";
-              }
-            } catch (error) {
-              console.error("Login error:", error);
-              this.loginMessage =
-                "Login failed. Please check your connection and try again.";
-              this.loginMessageType = "error";
-            } finally {
-              this.loggingIn = false;
-            }
-          },
-          closeLoginModal() {
-            this.showLoginModal = false;
-            this.resetLoginForm();
-          },
-
-          resetLoginForm() {
-            this.loginForm = {
-              email: "",
-              password: "",
-            };
-            this.loginMessage = "";
-            this.loginMessageType = "";
-          },
-
-          //Create a new product
-          async submitProduct(product) {
-            this.clearMessage();
-
-            try {
-              // Build payload with proper null handling
-              const productPayload = {
-                title: this.productForm.title || "",
-                price: this.productForm.price ?? 0,
-                description: this.productForm.description || "",
-                category: this.productForm.category || "",
-                stock: this.productForm.stock ?? 0,
-                image: this.productForm.image || "",
-                rating: this.productForm.rating ?? 0,
-              };
-
-              // Remove _id if it exists
-              delete productPayload._id;
-
-              console.log("Payload:", productPayload);
-
-              if (this.editMode) {
-                // Validate ID
-                if (!this.editingId) {
-                  throw new Error("No product ID available for update");
-                }
-
-                console.log("Updating product:", this.editingId);
-
-                const resp = await fetch(
-                  `${this.API_BASE}/products/${encodeURIComponent(
-                    this.editingId
-                  )}`,
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(productPayload),
-                  }
-                );
-
-                // Better error handling
-                if (!resp.ok) {
-                  const errorData = await resp.json().catch(() => ({}));
-                  console.error("Update failed:", errorData);
-                  throw new Error(
-                    errorData.error ||
-                      `Failed to update product (${resp.status})`
-                  );
-                }
-
-                const result = await resp.json();
-                console.log("Update result:", result);
-
-                this.showMessage("Product updated successfully!", "success");
-                this.resetForm(); // ✅ Reset form after successful edit too
-              } else {
-                // Create new product
-                const resp = await fetch(`${this.API_BASE}/products`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(productPayload),
-                });
-
-                if (!resp.ok) {
-                  const errorData = await resp.json().catch(() => ({}));
-                  console.error("Create failed:", errorData);
-                  throw new Error(
-                    errorData.error ||
-                      `Failed to create product (${resp.status})`
-                  );
-                }
-
-                this.showMessage("Product created successfully!", "success");
-                this.resetForm();
-              }
-
-              await this.fetchCollection();
-            } catch (error) {
-              console.error("submitProduct error:", error);
-              this.showMessage(error.message, "error");
-            }
-          },
-          editProduct(product) {
-            this.editMode = true;
-            this.editingId = product._id || product.id;
-            console.log("Editing product ID:", this.editingId);
-            // copy product fields to form
-            this.productForm = {
-              title: product.title || product.name || "",
-              price: product.price || 0,
-              description: product.description || "",
-              category: product.category || "",
-              stock:
-                product.stock !== undefined
-                  ? product.stock
-                  : product.availableInventory || 0,
-              image: product.image || "",
-              rating: product.rating || 0,
-            };
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          },
-
-          cancelEdit() {
-            this.resetForm();
-          },
-
-          resetForm() {
-            this.productForm = {
-              title: "",
-              price: null,
-              description: "",
-              category: "",
-              stock: null,
-              image: "",
-              rating: null,
-            };
-            this.editMode = false;
-            this.editingId = null;
-          },
-
-          async deleteProduct(id) {
-            if (!confirm("Are you sure you want to delete this document?"))
-              return;
-            try {
-              const resp = await fetch(
-                `${this.API_BASE}/products/${encodeURIComponent(
-                  this.collectionName
-                )}/${id}`,
-                { method: "DELETE" }
-              );
-              if (!resp.ok)
-                throw new Error(`${resp.status} ${resp.statusText}`);
-              this.showMessage("Document deleted successfully!", "success");
-              // remove locally too
-              this.allProducts = this.allProducts.filter(
-                (p) => (p._id || p.id) !== id
-              );
-              this.applyFilters();
-            } catch (err) {
-              // fallback: delete locally
-              this.allProducts = this.allProducts.filter(
-                (p) => (p._id || p.id) !== id
-              );
-              this.applyFilters();
-              this.showMessage(
-                "Document deleted locally (API unavailable).",
-                "info"
-              );
-            }
-          },
-
+          //For any message shown(error/success)
           showMessage(text, type) {
+            console.log("showMessage called:", text, type);
+
+            // Clear any existing timer
+            if (this.messageTimer) {
+              clearTimeout(this.messageTimer);
+              this.messageTimer = null;
+            }
+
+            // Set new message
             this.message = text;
             this.messageType = type;
-            setTimeout(() => {
+
+            // Auto-clear after 4 seconds
+            this.messageTimer = setTimeout(() => {
               this.clearMessage();
+              this.messageTimer = null;
             }, 4000);
           },
           clearMessage() {
@@ -1101,393 +718,135 @@
             this.messageType = "";
           },
 
-          /* -------------------------
-        Cart & checkout methods (from index.html)
-      ------------------------- */
-          addToCart(product) {
-            const pid = product._id || product.id;
-            const existing = this.cart.find((c) => c.id === pid);
-            if (existing) {
-              existing.quantity = (existing.quantity || 0) + 1;
-            } else {
-              this.cart.push({
-                id: pid,
-                title: product.title || product.name || "Untitled",
-                price: product.price || 0,
-                image: product.image || "",
-                quantity: 1,
-              });
-            }
-            // ensure reactive update of displayProducts inventory info
-            this.applyFilters();
-          },
-          cartCount(id) {
-            const item = this.cart.find((c) => c.id === id);
-            return item ? item.quantity : 0;
-          },
-          canAddToCart(product) {
-            // check product.stock if present, else product.availableInventory, else unlimited
-            const stock = Number(
-              product.stock !== undefined
-                ? product.stock
-                : product.availableInventory !== undefined
-                ? product.availableInventory
-                : Infinity
-            );
-            return stock > this.cartCount(product._id || product.id);
-          },
-          itemsLeft(product) {
-            const stock = Number(
-              product.stock !== undefined
-                ? product.stock
-                : product.availableInventory !== undefined
-                ? product.availableInventory
-                : Infinity
-            );
-            return Math.max(
-              0,
-              stock - this.cartCount(product._id || product.id)
-            );
-          },
-
-          async submitForm() {
-            // show modal immediately if you want UX; can wait for server success if preferred
-            this.showModal = true;
-
-            // build order payload
-            const orderPayload = {
-              customer: {
-                firstName: this.order.firstName,
-                lastName: this.order.lastName,
-                address: this.order.address,
-                city: this.order.city,
-                state: this.order.state,
-                method: this.order.method,
-                gift: this.order.gift,
-              },
-              items: this.cart.map((item) => ({
-                id: item.id,
-                title: item.title,
-                price: item.price,
-                quantity: item.quantity,
-                image: item.image || null,
-              })),
-              total: this.cart.reduce(
-                (s, it) => s + (it.price || 0) * (it.quantity || 0),
-                0
-              ),
-              createdAt: new Date(),
-            };
+          // Submitting and saving an order onclick
+          //Backend routes accept customer Information, items in cart and total(count and amount) from order
+          async submitOrder() {
+            if (this.submittingOrder) return;
+            this.submittingOrder = true;
 
             try {
-              const response = await fetch(`${this.API_BASE}/orders`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(orderPayload),
-              });
-
-              if (!response.ok) {
-                const err = await response.json().catch(() => null);
-                throw new Error(
-                  err && err.error ? err.error : `HTTP ${response.status}`
-                );
-              }
-
-              const saved = await response.json();
-              //store the returned order id locally
-              this.lastOrderId = saved._id || saved.id;
-              this.showModal = true;
-
-              // clear cart after successful order
-            } catch (err) {
-              console.error("Order submit failed:", err);
-              this.showMessage(
-                "Failed to submit order: " + err.message,
-                "error"
-              );
-            }
-          },
-
-          // Build the canonical order payload from local state
-          buildOrderPayload() {
-            return {
-              customer: {
-                firstName: this.order.firstName,
-                lastName: this.order.lastName,
-                address: this.order.address,
-                city: this.order.city,
-                state: this.order.state,
-                method: this.order.method,
-                gift: this.order.gift,
-              },
-              items: this.cart.map((item) => ({
-                id: item.id,
-                title: item.title,
-                price: item.price,
-                quantity: item.quantity,
-                image: item.image || null,
-              })),
-              total: this.cart.reduce(
-                (s, it) => s + (it.price || 0) * (it.quantity || 0),
-                0
-              ),
-              updatedAt: new Date(),
-            };
-          },
-
-          // Save order (POST) - used by "Keep" when order not yet saved, or can be called to create
-          async saveOrder() {
-            // If already saving, skip
-            if (this.saving) return;
-            this.saving = true;
-            this.modalMessage = "Saving order...";
-            try {
-              // If we already have order id, perform update instead
-              if (this.lastOrderId) {
-                await this.editOrder(); // reuse edit flow
-                this.modalMessage = "Order updated.";
-                this.saving = false;
+              if (!this.validateCheckout()) {
+                alert("Please fix the errors", "error");
                 return;
               }
 
-              const payload = this.buildOrderPayload();
+              const customer = {
+                firstName: this.order.firstName.trim(),
+                lastName: this.order.lastName.trim(),
+                phone: this.order.phone.trim(),
+                address: this.order.address.trim(),
+                city: this.order.city.trim(),
+                state: this.order.state.trim(),
+                method: this.order.method,
+                gift: this.order.gift,
+              };
+
+              const payload = {
+                customer,
+                items: this.cart,
+                itemCount: this.cartItemCount,
+                total: this.cartTotal,
+              };
+
               const resp = await fetch(`${this.API_BASE}/orders`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
               });
 
-              if (!resp.ok) {
-                const e = await resp.json().catch(() => null);
-                throw new Error((e && e.error) || `HTTP ${resp.status}`);
-              }
+              await this.updateProductspacess();
 
-              const saved = await resp.json();
-              this.lastOrderId = saved._id || saved.id;
-              this.modalMessage =
-                "Order saved (draft). You can edit or confirm it.";
-              this.showMessage && this.showMessage("Order saved", "success");
+              if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+              this.orderSuccess = true;
             } catch (err) {
-              console.error("saveOrder error:", err);
-              this.modalMessage = "Failed to save order: " + err.message;
-              this.showMessage &&
-                this.showMessage("Save failed: " + err.message, "error");
+              alert("Order failed: " + err.message, "error");
             } finally {
-              this.saving = false;
+              this.submittingOrder = false;
             }
           },
 
-          // Edit/update existing order (PUT). If no lastOrderId, it will create (POST) instead.
-          async editOrder() {
-            if (this.saving) return;
-            this.saving = true;
-            this.modalMessage = "Saving changes...";
+          resetAfterOrder() {
+            // Clear everything after successful order
+            this.cart = [];
+            this.showEditModal = false;
+            this.showEditModal = false;
 
-            try {
-              const payload = this.buildOrderPayload();
+            this.order = {
+              firstName: "",
+              lastName: "",
+              phone: "",
+              address: "",
+              city: "",
+              state: "",
+              method: "Home",
+              gift: "Do not send as Gift",
+            };
 
-              if (!this.lastOrderId) {
-                // nothing saved yet — create and store id
-                const resp = await fetch(`${this.API_BASE}/orders`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(payload),
-                });
-                if (!resp.ok) {
-                  const e = await resp.json().catch(() => null);
-                  throw new Error((e && e.error) || `HTTP ${resp.status}`);
-                }
-                const saved = await resp.json();
-                this.lastOrderId = saved._id || saved.id;
-                this.modalMessage = "Order created and updated.";
-                this.showMessage && this.showMessage("Order saved", "success");
-              } else {
-                // update existing order
-                const resp = await fetch(
-                  `${this.API_BASE}/orders/${encodeURIComponent(
-                    this.lastOrderId
-                  )}`,
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload),
-                  }
-                );
-                if (!resp.ok) {
-                  const e = await resp.json().catch(() => null);
-                  throw new Error((e && e.error) || `HTTP ${resp.status}`);
-                }
-                const updated = await resp.json();
-                this.modalMessage = "Order updated on server.";
-                this.showMessage &&
-                  this.showMessage("Order updated", "success");
-              }
-            } catch (err) {
-              console.error("editOrder error:", err);
-              this.modalMessage = "Failed to save changes: " + err.message;
-              this.showMessage &&
-                this.showMessage("Update failed: " + err.message, "error");
-            } finally {
-              this.saving = false;
-            }
+            this.view = "products";
           },
 
-          // Confirm order: mark as confirmed (PUT status: 'confirmed'), then clear cart and close modal
-          async confirmOrder() {
-            if (this.confirming) return;
-            this.confirming = true;
-            this.modalMessage = "Confirming order...";
-            try {
-              // Ensure order exists on server
-              if (!this.lastOrderId) {
-                // create then confirm
-                await this.saveOrder();
-                if (!this.lastOrderId)
-                  throw new Error("Failed to create order to confirm");
-              }
-
-              //update products inventory(stock)
-              await this.updateProductStocks();
-              // send status update (partial update)
-              const resp = await fetch(
-                `${this.API_BASE}/orders/${encodeURIComponent(
-                  this.lastOrderId
-                )}`,
-                {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    status: "confirmed",
-                    confirmedAt: new Date(),
-                  }),
-                }
-              );
-              if (!resp.ok) {
-                const e = await resp.json().catch(() => null);
-                throw new Error((e && e.error) || `HTTP ${resp.status}`);
-              }
-              const updated = await resp.json();
-
-              // Clear local cart and close modal
-              this.cart = [];
-              this.showModal = false;
-              this.modalMessage = "";
-              this.showMessage &&
-                this.showMessage("Order confirmed — thank you!", "success");
-              // reset form
-              this.order = {
-                firstName: "",
-                lastName: "",
-                address: "",
-                city: "",
-                state: "",
-                method: "Home",
-                gift: "Do not send as Gift",
-              };
-
-              // go back to products
-              this.view = "products";
-
-              // optionally store order id for receipts
-              this.lastOrderId = updated._id || updated.id;
-            } catch (err) {
-              console.error("confirmOrder error:", err);
-              this.modalMessage = "Failed to confirm order: " + err.message;
-              this.showMessage &&
-                this.showMessage("Confirm failed: " + err.message, "error");
-            } finally {
-              this.confirming = false;
-            }
+          dismissSuccess() {
+            this.orderSuccess = false;
+            this.toggleProducts();
+            this.resetAfterOrder();
           },
-          // Update product stocks after order confirmation
-          async updateProductStocks() {
+          // Update product spacess after each buy
+          async updateProductspacess() {
             try {
-              // Update each product in the cart
               for (const cartItem of this.cart) {
                 const productId = cartItem.id;
                 const quantity = cartItem.quantity || 0;
-
                 if (quantity <= 0) continue;
-
-                // Find the product in our local data
                 const product = this.allProducts.find(
                   (p) => (p._id || p.id) === productId
                 );
-
                 if (!product) {
                   console.warn(
-                    `Product ${productId} not found for stock update`
+                    `Product ${productId} not found for spaces update`
                   );
                   continue;
                 }
-
-                // Calculate new stock
-                const currentStock =
-                  product.stock !== undefined
-                    ? product.stock
+                const currentspaces =
+                  product.spaces !== undefined
+                    ? product.spaces
                     : product.availableInventory !== undefined
                     ? product.availableInventory
                     : Infinity;
-
-                if (currentStock === Infinity) continue; // Skip if product has unlimited stock
-
-                const newStock = Math.max(0, currentStock - quantity);
-
-                // Update via API if available
+                if (currentspaces === Infinity) continue;
+                const newspaces = Math.max(0, currentspaces - quantity);
                 try {
-                  const payload = { stock: newStock };
-
-                  // Try API update first
-                  const resp = await fetch(
-                    `${this.API_BASE}/collections/${encodeURIComponent(
-                      this.collectionName
-                    )}/${productId}`,
+                  const payload = { spaces: newspaces };
+                  const resp = await fetch(`${API_BASE}/${encodeURIComponent(this.collectionName)}/${productId}`,
                     {
                       method: "PUT",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify(payload),
                     }
                   );
-
-                  if (resp.ok) {
-                    console.log(
-                      `Stock updated for product ${productId}: ${currentStock} → ${newStock}`
-                    );
-                  } else {
-                    throw new Error(`HTTP ${resp.status}`);
-                  }
+                  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 } catch (apiError) {
-                  // Fallback: update locally
                   console.warn(
-                    "API stock update failed, updating locally:",
+                    "API spaces update failed, updating locally:",
                     apiError
                   );
-                  if (product.stock !== undefined) {
-                    product.stock = newStock;
-                  } else if (product.availableInventory !== undefined) {
-                    product.availableInventory = newStock;
-                  }
+                  if (product.spaces !== undefined) product.spaces = newspaces;
+                  else if (product.availableInventory !== undefined)
+                    product.availableInventory = newspaces;
                 }
-
-                // Update local product data regardless
-                if (product.stock !== undefined) {
-                  product.stock = newStock;
-                } else if (product.availableInventory !== undefined) {
-                  product.availableInventory = newStock;
-                }
+                if (product.spaces !== undefined) product.spaces = newspaces;
+                else if (product.availableInventory !== undefined)
+                  product.availableInventory = newspaces;
               }
-
-              // Refresh the display to show updated stocks
-              this.applyFilters();
             } catch (error) {
-              console.error("Error updating product stocks:", error);
+              console.error("Error updating product spacess:", error);
               throw new Error(
-                "Failed to update product stocks: " + error.message
+                "Failed to update product spacess: " + error.message
               );
             }
           },
 
-          // Delete order on server then clear local cart and modal
+          // Delete order
           async deleteOrder() {
             if (this.deleting) return;
             if (
@@ -1498,135 +857,157 @@
               return;
 
             this.deleting = true;
-            this.modalMessage = "Deleting order...";
+            this.modalMessage = "Deleting...";
             try {
+              // if final order exists, delete it
               if (this.lastOrderId) {
                 const resp = await fetch(
                   `${this.API_BASE}/orders/${encodeURIComponent(
                     this.lastOrderId
                   )}`,
-                  {
-                    method: "DELETE",
-                  }
+                  { method: "DELETE" }
                 );
                 if (!resp.ok) {
                   const e = await resp.json().catch(() => null);
                   throw new Error((e && e.error) || `HTTP ${resp.status}`);
                 }
-                // server deleted — clear
-                this.showMessage &&
-                  this.showMessage("Order deleted", "success");
-              } else {
-                // nothing saved on server, just clear local state
-                this.showMessage &&
-                  this.showMessage("Local order cleared", "info");
+                this.showMessage("Order deleted", "success");
+                this.lastOrderId = null;
               }
-
               // cleanup local
-              this.lastOrderId = null;
               this.cart = [];
               this.showModal = false;
               this.modalMessage = "";
             } catch (err) {
               console.error("deleteOrder error:", err);
-              this.modalMessage = "Failed to delete order: " + err.message;
-              this.showMessage &&
-                this.showMessage("Delete failed: " + err.message, "error");
+              this.modalMessage = "Failed to delete: " + err.message;
+              this.showMessage("Delete failed: " + err.message, "error");
             } finally {
               this.deleting = false;
             }
           },
 
-          // Called when user clicks "Edit" in modal
-          startEditOrder() {
-            // populate editableOrder from current order state
-            this.modalEditMode = true;
-            // ensure editableOrder has customer information
-            this.editableOrder.customer = Object.assign({}, this.order); // copy basic fields
-            this.modalMessage = "Edit the fields below, then Save Changes.";
-          },
 
-          // cancel editing and revert changes
-          cancelEditOrder() {
-            this.modalEditMode = false;
-            this.modalMessage = "";
-          },
-          // Save edited order: PUT to /orders/:id (or POST if no id)
-          async saveEditedOrder() {
-            if (this.saving) return;
-            this.saving = true;
-            this.modalMessage = "Saving changes…";
-
-            try {
-              const payload = {
-                customer: Object.assign({}, this.editableOrder.customer),
-                total: this.cartTotal,
-                updatedAt: new Date(),
-              };
-
-              // If no server id, create new order (POST)
-              if (!this.lastOrderId) {
-                const resp = await fetch(`${this.API_BASE}/orders`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(payload),
-                });
-                if (!resp.ok) throw new Error(`Server ${resp.status}`);
-                const saved = await resp.json();
-                this.lastOrderId = saved._id || saved.id;
-                this.modalMessage = "Order created and saved.";
-                this.showMessage && this.showMessage("Order saved", "success");
-              } else {
-                // update existing
-                const resp = await fetch(
-                  `${this.API_BASE}/orders/${encodeURIComponent(
-                    this.lastOrderId
-                  )}`,
-                  {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload),
-                  }
-                );
-                if (!resp.ok) {
-                  const j = await resp.json().catch(() => null);
-                  throw new Error((j && j.error) || `HTTP ${resp.status}`);
-                }
-                const updated = await resp.json();
-                this.modalMessage = "Order updated on server.";
-                this.showMessage &&
-                  this.showMessage("Order updated", "success");
-              }
-
-              // update customer info in main order object
-              this.order.firstName = this.editableOrder.customer.firstName;
-              this.order.lastName = this.editableOrder.customer.lastName;
-              this.order.address = this.editableOrder.customer.address;
-              this.order.city = this.editableOrder.customer.city;
-              this.order.state = this.editableOrder.customer.state;
-              this.order.method = this.editableOrder.customer.method;
-              this.order.gift = this.editableOrder.customer.gift;
-
-              // exit edit mode
-              this.modalEditMode = false;
-              this.modalMessage =
-                "Saved changes locally. Confirm Payment if information provided are correct";
-            } catch (err) {
-              console.error("saveEditedOrder error:", err);
-              this.modalMessage = "Failed to save changes: " + err.message;
-              this.showMessage &&
-                this.showMessage(
-                  "Save changes failed: " + err.message,
-                  "error"
-                );
-            } finally {
-              this.saving = false;
+          removeOneFromCart(index) {
+            const item = this.cart[index];
+            if (!item) return;
+            const pid = item.id;
+            // decrement quantity or remove
+            if ((item.quantity || 0) > 1) {
+              item.quantity -= 1;
+            } else {
+              this.cart.splice(index, 1);
+            }
+            // reflect availability back to displayed product
+            const p = this.allProducts.find((x) => (x._id || x.id) === pid);
+            if (p) {
+              p.spaces = (Number(p.spaces) || 0) + 1;
             }
           },
 
           closeModal() {
-            // clear cart and close modal
             this.showModal = false;
+            // ensure not left in edit mode
+            this.modalEditMode = false;
+            this.editableCartItems = [];
+            this.editableCartBackup = [];
+            this.modalMessage = "";
+          },
+
+          /* -------------------------
+                   Cart helpers
+                ------------------------- */
+          //Every time addToCart is called, the quantity of this item in cart is incremented by One,
+          addToCart(product, qty = 1) {
+            if (!product) return;
+            const pid = String(
+              product._id ?? product.id ?? product.idNumber ?? ""
+            ).trim();
+            if (!pid) return;
+
+            const existing = this.cart.find((c) => String(c.id) === pid);
+            qty = Math.max(1, Math.floor(Number(qty) || 1));
+
+            if (existing) {
+              existing.quantity = (Number(existing.quantity) || 0) + qty;
+            } else {
+              this.cart.push({
+                id: pid,
+                Subject: product.Subject || product.name || "",
+                price: Number(product.price || 0),
+                image: product.image || "",
+                quantity: qty,
+              });
+            }
+            const display = this.allProducts.find(
+              (p) => String(p._id ?? p.id) === pid
+            );
+            if (display && display.availableInventory !== undefined) {
+              display.availableInventory = Math.max(
+                0,
+                (Number(display.availableInventory) || 0) - qty
+              );
+            }
+          },
+
+          //Number of items(lessons) in a cart
+          cartCount(id) {
+            const item = this.cart.find((c) => c.id === id);
+            return item ? item.quantity : 0;
+          },
+
+          //Dependent on the number of spaces available. If no spaces available then user should not be able to buy more
+          canAddToCart(product) {
+            const spaces = Number(
+              product.spaces !== undefined
+                ? product.spaces
+                : product.availableInventory !== undefined
+                ? product.availableInventory
+                : Infinity
+            );
+            return spaces > this.cartCount(product._id || product.id);
+          },
+          itemsLeft(product) {
+            const spaces = Number(
+              product.spaces !== undefined
+                ? product.spaces
+                : product.availableInventory !== undefined
+                ? product.availableInventory
+                : Infinity
+            );
+            return Math.max(
+              0,
+              spaces - this.cartCount(product._id || product.id)
+            );
+          },
+
+          /*Validation for Submitting an order, those conditions have to be met
+          firstName, LastName and phone number are required
+          For Names, only letters and spaces are allowed
+          For Phone No. it should be strictly 10 numerical characters*/
+          validateField(fieldName) {
+            const value = this.order[fieldName];
+            switch (fieldName) {
+              case "firstName":
+              case "lastName":
+                if (!value || !String(value).trim())
+                  this.fieldErrors[fieldName] = "This field is required";
+                else if (!/^[A-Za-z\s]+$/.test(value))
+                  this.fieldErrors[fieldName] =
+                    "Only letters and spaces allowed";
+                else this.fieldErrors[fieldName] = "";
+                break;
+              case "phone":
+                if (!value || !String(value).trim())
+                  this.fieldErrors[fieldName] = "This field is required";
+                else if (!/^\d+$/.test(String(value)))
+                  this.fieldErrors[fieldName] = "Only numbers allowed";
+                else if (String(value).length < 10)
+                  this.fieldErrors[fieldName] =
+                    "Phone must be at least 10 digits";
+                else this.fieldErrors[fieldName] = "";
+                break;
+            }
           },
         },
       });
