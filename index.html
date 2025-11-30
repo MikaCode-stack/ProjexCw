@@ -904,6 +904,18 @@
           },
 
           //Modal helpers
+
+          // Resolve canonical product object from allProducts by id/_id
+          resolveProductById(idOrObj) {
+            const id = String(
+              (typeof idOrObj === "object"
+                ? idOrObj.id ?? idOrObj._id
+                : idOrObj) ?? ""
+            );
+            return (
+              this.allProducts.find((p) => String(p._id ?? p.id) === id) || null
+            );
+          },
           // Modal-specific check: checks original product's spaces and current cart count
           modalCanAdd(cartItem) {
             const original = this.resolveProductById(cartItem);
