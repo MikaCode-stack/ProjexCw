@@ -1,4 +1,4 @@
-# ProjexCw
+# MindForge-Frontend
 🌟 MindForge — Online Learning Platform (Frontend)
 🧠 Overview
 
