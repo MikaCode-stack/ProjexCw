@@ -98,7 +98,7 @@
             <input
               v-model="searchQuery"
               @input="performSearch"
-              placeholder="🔍 Search by Subject"
+              placeholder="🔍 Search by subject"
             />
           </div>
 
@@ -109,7 +109,7 @@
               <label>Sort By:</label>
               <select v-model="sortField" @change="applyFilters">
                 <option value="">None</option>
-                <option value="Subject">Subject</option>
+                <option value="subject">Subject</option>
                 <option value="price">Price</option>
                 <option value="category">Category</option>
                 <option value="spaces">spaces</option>
@@ -161,12 +161,12 @@
             class="product-card"
           >
             <h3
-              v-html="highlightMatch(product.Subject || product.name || 'Unnamed')"
+              v-html="highlightMatch(product.subject || product.name || 'Unnamed')"
             ></h3>
             <img
               v-if="product.image"
               :src="product.image"
-              :alt="product.Subject"
+              :alt="product.subject"
               style="width: 100%; border-radius: 10px; max-height: 50%"
             />
             <p v-if="product.price" class="price">
@@ -227,7 +227,7 @@
           </div>
         </div>
         <div v-if="!loading && allProducts.length === 0" class="empty-state">
-          No classes were found, try another Subject.
+          No classes were found, try another subject.
         </div>
       </div>
 
@@ -306,7 +306,7 @@
         <h4>Cart Items</h4>
         <ul>
           <li v-for="item in cart" :key="item.id">
-            {{ item.Subject || 'Item' }} : {{ item.quantity || 0 }} × ${{
+            {{ item.subject || 'Item' }} : {{ item.quantity || 0 }} × ${{
             (item.price || 0).toFixed(2) }}
           </li>
         </ul>
@@ -415,7 +415,7 @@
                     >
                     
 
-                    <h4>{{ product.Subject || product.name || 'No Subject' }}</h4>
+                    <h4>{{ product.subject || product.name || 'No subject' }}</h4>
                     <p>Price: ${{ (product.price || 0).toFixed(2) }}</p>
 
                     <div>
@@ -507,7 +507,7 @@
 
             // product form
             productForm: {
-              Subject: "",
+              subject: "",
               price: null,
               description: "",
               category: "",
@@ -624,7 +624,7 @@
           },
 
           //Performing search. Query fetched in front-end, but search logic done in baackend. Afterwards, results are displayed in front-end.
-          //Dynamic Searching through Subject  
+          //Dynamic Searching through subject  
           async performSearch() {
             if (this.searchQuery.trim() === "") {
               console.log("performSearch: empty query -> fetching collection");
@@ -933,7 +933,7 @@
             } else {
               this.cart.push({
                 id: pid,
-                Subject: product.Subject || product.name || "",
+                subject: product.subject || product.name || "",
                 price: Number(product.price || 0),
                 image: product.image || "",
                 quantity: qty,
