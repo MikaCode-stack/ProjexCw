@@ -542,7 +542,7 @@
           };
         },
         created() {
-          this.fetchCollection();
+          this.fetchLessons();
         },
         computed: {
           cartItemCount() {
@@ -576,7 +576,7 @@
           toggleProducts() {
             this.view = "products";
             window.scrollTo(0, 0);
-            this.fetchCollection();
+            this.fetchLessons();
           },
 
           validateCheckout() {
@@ -628,7 +628,7 @@
           async performSearch() {
             if (this.searchQuery.trim() === "") {
               console.log("performSearch: empty query -> fetching collection");
-              return this.fetchCollection();
+              return this.fetchLessons();
             }
             try {
               const url = `${this.API_BASE}/search?query=${encodeURIComponent(
@@ -649,7 +649,7 @@
             } catch (error) {
               console.error("Error performing search:", error);
               this.showMessage("Search failed, displaying all Courses");
-              this.fetchCollection();
+              this.fetchLessons();
             }
           },
 
